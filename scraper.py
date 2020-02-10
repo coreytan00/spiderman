@@ -45,10 +45,11 @@ def is_valid(url):
             + r"|rm|smil|wmv|swf|wma|zip|rar|gz)$", parsed.path.lower())
        		#check if in domain
         	domainbool = parsed.netloc in set(DOMAINS) 
-        	domainbool2 = (parsed.netloc == "www.today.uci.edu" and 
-        				parsed.path == "/department/information_computer_sciences/")
-
-        	return (extbool and (domainbool or domainbool2))
+        	#domainbool2 = (parsed.netloc == "www.today.uci.edu" and 
+        	#			parsed.path == "/department/information_computer_sciences/")
+        	print(domainbool)
+        	return extbool
+        	#return (extbool and (domainbool or domainbool2))
 
     except TypeError:
         print ("TypeError for ", parsed)
