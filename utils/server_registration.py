@@ -26,7 +26,9 @@ def get_cache_server(config, restart):
     print("node created")
     print("restart: ", restart)
     print("config user agent: ", config.user_agent)
-    print("config.save_file", config.save_file)
+    print("config.save_file: ", config.save_file)
     print("os.path.exists: ", os.path.exists(config.save_file))
+    print("restart or not os.path.exists(config.save_file):", restart or not os.path.exists(config.save_file))
+    print("return value: ", init_node.start(config.user_agent, restart or not os.path.exists(config.save_file)))
     return init_node.start(
         config.user_agent, restart or not os.path.exists(config.save_file))
