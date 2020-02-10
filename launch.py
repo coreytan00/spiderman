@@ -7,12 +7,17 @@ from crawler import Crawler
 
 
 def main(config_file, restart):
+    print("main begin")
     cparser = ConfigParser()
+    print("parser created")
     cparser.read(config_file)
+    print("config file successfully read")
     config = Config(cparser)
+    print("some other config")
     config.cache_server = get_cache_server(config, restart)
+    print("cache server obtained")
     crawler = Crawler(config, restart)
-    print("runs here")
+    print("Crawler created")
     crawler.start()
 
 
