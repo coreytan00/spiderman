@@ -9,8 +9,7 @@ def extract_next_links(mem, url, resp):
 	print('runs')
     # Implementation requred.
     # go through find all the urlus.
-    if url not in mem:
-    	print("hola")
+    #if url not in mem:
     	#find the hrefs.
     return list()
     # defend our position of low quality urls.
