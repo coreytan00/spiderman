@@ -43,24 +43,24 @@ def is_valid(url):
             + r"|epub|dll|cnf|tgz|sha1"
             + r"|thmx|mso|arff|rtf|jar|csv"
             + r"|rm|smil|wmv|swf|wma|zip|rar|gz)$", parsed.path.lower()))
-        """
-        	and
-        	#check if in domain
-        	re.match("ics.uci.edu")
-        	or
-        	re.match("cs.uci.edu")
-        """
+       		#check if in domain
+        	and 
+        	(if parsed.netloc in set(DOMAINS) or 
+        	((parsed.netloc == "www.today.uci.edu") 
+        	and (parsed.path == "/department/information_computer_sciences/")))
+
     except TypeError:
         print ("TypeError for ", parsed)
         raise
 
 DOMAINS = [
-	"https://www.ics.uci.edu/",
-	"https://www.cs.uci.edu/",
-	"https://www.informatics.uci.edu/",
-	"https://www.stat.uci.edu/",
-	"https://www.today.uci.edu/department/information_computer_sciences/"
+	"www.ics.uci.edu/",
+	"www.cs.uci.edu/",
+	"www.informatics.uci.edu/",
+	"www.stat.uci.edu/",
 ]
+	"www.today.uci.edu/department/information_computer_sciences/"
+
 
 STOPWORDS = [
 	'a', 'about', 'above', 'after', 'again', 'against', 'all', 'am', 'an', 
