@@ -14,8 +14,10 @@ def main(config_file, restart):
     print("config file successfully read")
     config = Config(cparser)
     print("some other config")
+    
     config.cache_server = get_cache_server(config, restart)
     print("cache server obtained")
+
     crawler = Crawler(config, restart)
     print("Crawler created")
     crawler.start()
