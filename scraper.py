@@ -7,12 +7,12 @@ def scraper(mem, url, resp):
     return [link for link in links if is_valid(link)] #will be thrown in frontier by worker
 
 def extract_next_links(mem, url, resp):
-    lst = []
+    #lst = []
     print("url: ", url)
     print("resp: ", resp)
     #if url not in mem:
     	#find the hrefs.
-    return lst
+    #return lst
     # defend our position of low quality urls.
 
 def is_valid(url):
