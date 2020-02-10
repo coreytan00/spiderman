@@ -31,7 +31,6 @@ def extract_next_links(mem, url, resp):
 def is_valid(url):
     try:
         parsed = urlparse(url)
-        print(parsed)
         if parsed.scheme not in set(["http", "https"]):
             return False
         else:
@@ -45,11 +44,11 @@ def is_valid(url):
             + r"|thmx|mso|arff|rtf|jar|csv"
             + r"|rm|smil|wmv|swf|wma|zip|rar|gz)$", parsed.path.lower())
        		#check if in domain
-        	domainbool = (parsed.netloc in set(DOMAINS) or 
-        		((parsed.netloc == "www.today.uci.edu") 
-        			and (parsed.path == "/department/information_computer_sciences/")))
+        	domainbool = parsed.netloc in set(DOMAINS) 
+        	domainbool2 = (parsed.netloc == "www.today.uci.edu" and 
+        				parsed.path == "/department/information_computer_sciences/")
 
-        	return (extbool and domainbool)
+        	return (extbool and (domainbool or domainbool2))
 
     except TypeError:
         print ("TypeError for ", parsed)
