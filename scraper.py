@@ -1,15 +1,17 @@
 import re
 from urllib.parse import urlparse
 
-def scraper(url, resp):
-    links = extract_next_links(url, resp)
-    return [link for link in links if is_valid(link)]
+def scraper(mem, url, resp):
+    links = extract_next_links(mem, url, resp)
+    return [link for link in links if is_valid(link)] #will be thrown in frontier by worker
 
-def extract_next_links(url, resp):
+def extract_next_links(mem, url, resp):
     # Implementation requred.
     # go through find all the urlus.
-    print("works")
+    if url not in mem:
+    	#find the hrefs.
     return list()
+    # defend our position of low quality urls.
 
 def is_valid(url):
     try:
