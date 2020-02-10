@@ -17,9 +17,10 @@ def extract_next_links(mem, url, resp):
 	   	html_doc = resp.raw_response.text
 	   	soup = BeautifulSoup(html_doc, 'html.parser')
 	   	for link in soup.find_all('a'):
-	   		if url not in mem:
-	   			mem.add(url)
-	   			lst.append((link.get('href')))
+	   		hlink = link.get('href')
+	   		if hlink not in mem:
+	   			mem.add(hlink)
+	   			lst.append(hlink)
 	   	print(lst)
     return lst
     # defend our position of low quality urls.
