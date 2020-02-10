@@ -51,7 +51,9 @@ def is_valid(url):
         	#print(domainbool)
         	return (extbool and (domainbool or domainbool2))
 
-        	#MAKE SURE TO INCLUDE SUBDOMAINS AND CHECK ROBOT
+        	#MAKE SURE TO INCLUDE SUBDOMAINS -- use re.match instead.
+        	#AND CHECK ROBOT - make sure delay?? nothing is wrong with .5 seconds
+        	#defragment urls?
 
     except TypeError:
         print ("TypeError for ", parsed)
