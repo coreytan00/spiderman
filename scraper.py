@@ -9,7 +9,10 @@ def scraper(mem, url, resp):
 def extract_next_links(mem, url, resp):
     lst = []
     print("url: ", url)
-    print("resp: ", resp.read())
+    print("resp raw response: ", resp.raw_response)
+    print("resp .url: ", resp.url)
+    print("resp status: ", resp.status)
+    print("resp error: ", resp.error)
     #if url not in mem:
     	#find the hrefs.
     return lst
