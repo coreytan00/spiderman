@@ -14,6 +14,7 @@ class Worker(Thread):
         super().__init__(daemon=True)
         
     def run(self):
+        start_time = time.time()
         mem = set() #memory cache of unique urls
         while True:
             tbd_url = self.frontier.get_tbd_url()
@@ -29,3 +30,5 @@ class Worker(Thread):
                 self.frontier.add_url(scraped_url)
             self.frontier.mark_url_complete(tbd_url)
             time.sleep(self.config.time_delay)
+        print("Number of unique urls: ", len(mem))
+        print("My program took", time.time() - start_time, "to run")

@@ -22,7 +22,7 @@ def extract_next_links(mem, url, resp):
 	   		if hlink not in mem:
 	   			mem.add(hlink)
 	   			lst.append(hlink)
-    return lst
+    return []
     # defend our position of low quality urls.
 
     #total number of words on a page
@@ -44,11 +44,11 @@ def is_valid(url):
             + r"|thmx|mso|arff|rtf|jar|csv"
             + r"|rm|smil|wmv|swf|wma|zip|rar|gz)$", parsed.path.lower())
        		#check if in domain
-       		print(parsed.netloc)
+       		#print(parsed.netloc)
         	domainbool = parsed.netloc in set(DOMAINS) 
         	domainbool2 = (parsed.netloc == "www.today.uci.edu" and 
         				parsed.path == "/department/information_computer_sciences/")
-        	print(domainbool)
+        	#print(domainbool)
         	return (extbool and (domainbool or domainbool2))
 
     except TypeError:
