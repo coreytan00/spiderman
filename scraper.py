@@ -20,8 +20,7 @@ def extract_next_links(mem, url, resp):
 	   		if url not in mem:
 	   			mem.add(url)
 	   			lst.append((link.get('href')))
-	   		#else it is skipped
-	print(lst)
+	   	print(lst)
     return lst
     # defend our position of low quality urls.
 
