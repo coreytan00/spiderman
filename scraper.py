@@ -6,6 +6,7 @@ def scraper(mem, url, resp):
     return [link for link in links if is_valid(link)] #will be thrown in frontier by worker
 
 def extract_next_links(mem, url, resp):
+	print('runs')
     # Implementation requred.
     # go through find all the urlus.
     if url not in mem:
