@@ -22,7 +22,7 @@ def extract_next_links(mem, url, resp):
 	   		if hlink not in mem:
 	   			mem.add(hlink)
 	   			lst.append(hlink)
-    return []
+    return lst
     # defend our position of low quality urls.
 
     #total number of words on a page
@@ -50,6 +50,8 @@ def is_valid(url):
         				parsed.path == "/department/information_computer_sciences/")
         	#print(domainbool)
         	return (extbool and (domainbool or domainbool2))
+
+        	#MAKE SURE TO INCLUDE SUBDOMAINS AND CHECK ROBOT
 
     except TypeError:
         print ("TypeError for ", parsed)

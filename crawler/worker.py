@@ -31,4 +31,5 @@ class Worker(Thread):
             self.frontier.mark_url_complete(tbd_url)
             time.sleep(self.config.time_delay)
         print("Number of unique urls: ", len(mem))
-        print("My program took", time.time() - start_time, "to run")
+        print("My program took", time.time() - start_time, "seconds to run")
+        print("All unique urls: ", mem)
