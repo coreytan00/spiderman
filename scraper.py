@@ -34,7 +34,7 @@ def is_valid(url):
         print(parsed)
         if parsed.scheme not in set(["http", "https"]):
             return False
-        return (not re.match(
+        return ((not re.match(
             r".*\.(css|js|bmp|gif|jpe?g|ico"
             + r"|png|tiff?|mid|mp2|mp3|mp4"
             + r"|wav|avi|mov|mpeg|ram|m4v|mkv|ogg|ogv|pdf"
@@ -47,7 +47,7 @@ def is_valid(url):
         	and 
         	(if parsed.netloc in set(DOMAINS) or 
         	((parsed.netloc == "www.today.uci.edu") 
-        	and (parsed.path == "/department/information_computer_sciences/")))
+        	and (parsed.path == "/department/information_computer_sciences/"))))
 
     except TypeError:
         print ("TypeError for ", parsed)
