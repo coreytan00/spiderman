@@ -10,6 +10,7 @@ def extract_next_links(mem, url, resp):
     # Implementation requred.
     # go through find all the urlus.
     if url not in mem:
+    	print("hola")
     	#find the hrefs.
     return list()
     # defend our position of low quality urls.
