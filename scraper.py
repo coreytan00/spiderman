@@ -1,4 +1,5 @@
 import re
+from bs4 import BeautifulSoup
 from urllib.parse import urlparse
 
 def scraper(mem, url, resp):
@@ -6,9 +7,12 @@ def scraper(mem, url, resp):
     return [link for link in links if is_valid(link)] #will be thrown in frontier by worker
 
 def extract_next_links(mem, url, resp):
+    lst = []
+    print("url: ", url)
+    print("resp: ", resp)
     #if url not in mem:
     	#find the hrefs.
-    return list()
+    return lst
     # defend our position of low quality urls.
 
 def is_valid(url):
