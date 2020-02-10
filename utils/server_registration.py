@@ -25,4 +25,4 @@ def get_cache_server(config, restart):
         init, Types=[Register], dataframe=(config.host, config.port))
     print("node created")
     return init_node.start(
-        config.user_agent, restart)
+        config.user_agent, restart or not os.path.exists(config.save_file))
