@@ -44,6 +44,8 @@ def is_valid(url):
             + r"|thmx|mso|arff|rtf|jar|csv"
             + r"|rm|smil|wmv|swf|wma|zip|rar|gz)$", parsed.path.lower())
        		#check if in domain
+       		print(parsed.netloc)
+       		print(DOMAINS)
         	domainbool = parsed.netloc in set(DOMAINS) 
         	#domainbool2 = (parsed.netloc == "www.today.uci.edu" and 
         	#			parsed.path == "/department/information_computer_sciences/")
