@@ -51,7 +51,8 @@ def is_valid(url):
         	#print(domainbool)
         	return (extbool and (domainbool or domainbool2))
 
-        	#MAKE SURE TO INCLUDE SUBDOMAINS -- use re.match instead.
+        	#TODO:
+        	#MAKE SURE TO INCLUDE SUBDOMAINS -- use re.match with parsed.netloc.
         	#AND CHECK ROBOT - make sure delay?? nothing is wrong with .5 seconds
         	#defragment urls?
 
