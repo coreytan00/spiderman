@@ -15,7 +15,11 @@ def extract_next_links(mem, url, resp):
     print("resp error: ", resp.error)
     if resp.status == 200:
 	    #print("resp asdf: ", resp.raw_response.json())
-	    print("resp asdf: ", resp.raw_response.content)
+	   	#print("resp asdf: ", resp.raw_response.content)
+	   	html_doc = resp.raw_response.text
+	   	soup = BeautifulSoup(html_doc, 'html.parser')
+	    for link in soup.find_all('a'):
+    		print(link.get('href'))
     #if url not in mem:
     	#find the hrefs.
     return lst
