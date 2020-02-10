@@ -45,10 +45,9 @@ def is_valid(url):
             + r"|thmx|mso|arff|rtf|jar|csv"
             + r"|rm|smil|wmv|swf|wma|zip|rar|gz)$", parsed.path.lower())
        		#check if in domain
-        	domainbool = 
-        	(parsed.netloc in set(DOMAINS) or 
-        	((parsed.netloc == "www.today.uci.edu") 
-        	and (parsed.path == "/department/information_computer_sciences/")))
+        	domainbool = (parsed.netloc in set(DOMAINS) or 
+        		((parsed.netloc == "www.today.uci.edu") 
+        			and (parsed.path == "/department/information_computer_sciences/")))
 
         	return (extbool and domainbool)
 
