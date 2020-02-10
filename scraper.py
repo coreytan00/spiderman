@@ -13,6 +13,7 @@ def extract_next_links(mem, url, resp):
     print("resp .url: ", resp.url)
     print("resp status: ", resp.status)
     print("resp error: ", resp.error)
+    print("resp content: ", resp.content)
     #if url not in mem:
     	#find the hrefs.
     return lst
