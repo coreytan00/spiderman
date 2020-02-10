@@ -14,7 +14,6 @@ def extract_next_links(mem, url, resp):
     print("resp status: ", resp.status)
     print("resp error: ", resp.error)
     if resp.status == 200:
-	    print("resp text: ", resp.text)
 	    print("resp json: ", resp.json())
     #if url not in mem:
     	#find the hrefs.
