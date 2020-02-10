@@ -61,7 +61,6 @@ DOMAINS = [
 	"www.informatics.uci.edu/",
 	"www.stat.uci.edu/",
 ]
-	"www.today.uci.edu/department/information_computer_sciences/"
 
 
 STOPWORDS = [
