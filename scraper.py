@@ -19,7 +19,7 @@ def extract_next_links(mem, url, resp):
 	   	for link in soup.find_all('a'):
 	   		if url not in mem:
 	   			mem.add(url)
-	   			lst.append(link.get('href'))
+	   			lst.append((link.get('href')))
 	   		#else it is skipped
 	print(lst)
     return lst
