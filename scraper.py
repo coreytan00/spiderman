@@ -13,17 +13,20 @@ def extract_next_links(mem, url, resp):
     print("resp .url: ", resp.url)
     print("resp status: ", resp.status)
     print("resp error: ", resp.error)
-    if resp.status == 200:
-	    #print("resp asdf: ", resp.raw_response.json())
-	   	#print("resp asdf: ", resp.raw_response.content)
+    if 200<= resp.status < 300:
 	   	html_doc = resp.raw_response.text
 	   	soup = BeautifulSoup(html_doc, 'html.parser')
 	   	for link in soup.find_all('a'):
-	   		print(link.get('href'))
-    #if url not in mem:
-    	#find the hrefs.
+	   		if url not in mem:
+	   			mem.add(url)
+	   			lst.append(link.get('href'))
+	   		#else it is skipped
+	print(lst)
     return lst
     # defend our position of low quality urls.
+
+    #total number of words on a page
+    #most common words
 
 def is_valid(url):
     try:
