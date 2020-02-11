@@ -32,7 +32,7 @@ def is_valid(mem, url):
         if parsed.scheme not in set(["http", "https"]):
             return False
         else:
-        	url = url - parsed.
+        	#url = url - parsed.
         	extbool = not re.match(
             r".*\.(css|js|bmp|gif|jpe?g|ico"
             + r"|png|tiff?|mid|mp2|mp3|mp4"
