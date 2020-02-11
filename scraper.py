@@ -42,7 +42,7 @@ def is_valid(mem, url):
 				+ r"|epub|dll|cnf|tgz|sha1"
 				+ r"|thmx|mso|arff|rtf|jar|csv"
 				+ r"|rm|smil|wmv|swf|wma|zip|rar|gz)$", parsed.path.lower())
-			print("hola!")
+
 			sub_bool  = re.match(r"(www.)?[-a-zA-Z0-9.]*.ics.uci.edu", parsed.netloc)
 			sub_bool2 = re.match(r"(www.)?[-a-zA-Z0-9.]*.cs.uci.edu", parsed.netloc)
 			sub_bool3 = re.match(r"(www.)?[-a-zA-Z0-9.]*.informatics.uci.edu", parsed.netloc)
@@ -50,10 +50,11 @@ def is_valid(mem, url):
 			sub_bool5 = (re.match(r"(www.)?[-a-zA-Z0-9.]*.today.uci.edu", parsed.netloc) 
             	and (parsed.path == "/department/information_computer_sciences/"))
 			if (extbool and (sub_bool or sub_bool2 or sub_bool3 or sub_bool4 or sub_bool5)):
-				mem.add(url)
-				return True
-			else:
-				return False
+				if url not in mem:
+					mem.add(url)
+					return True
+				else:
+					return False
 
 	except TypeError:
 		print ("TypeError for ", parsed)
