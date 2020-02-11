@@ -2,10 +2,11 @@ import re
 from bs4 import BeautifulSoup
 from urllib.parse import urlparse
 import requests
+from urllib import robotparser
 
-def scraper(mem, url, resp):
+def scraper(robot_cache, mem, url, resp):
 	links = extract_next_links(url, resp)
-	return [link for link in links if is_valid(mem, link)] #will be thrown in frontier by worker
+	return [link for link in links if is_valid(robot_cache, mem, link)] #will be thrown in frontier by worker
 
 def extract_next_links(url, resp):
 	lst = []
@@ -26,7 +27,7 @@ def extract_next_links(url, resp):
 	#total number of words on a page
 	#most common words
 
-def is_valid(mem, url):
+def is_valid(robot_cache, mem, url):
 	try:
 		parsed = urlparse(url)
 		if parsed.scheme not in set(["http", "https"]):
@@ -50,8 +51,22 @@ def is_valid(mem, url):
 			sub_bool5 = (re.match(r"(www.)?[-a-zA-Z0-9.]*.today.uci.edu", parsed.netloc) 
             	and (parsed.path == "/department/information_computer_sciences/"))
 			if (extbool and (sub_bool or sub_bool2 or sub_bool3 or sub_bool4 or sub_bool5)):
-				robot_site = parsed.scheme + "://" + parsed.netloc + "/robots.txt"
-				robot_resp = requests.get(robot_site)
+				if parsed.netloc not in robot_cache:
+					robot_site = parsed.scheme + "://" + parsed.netloc + "/robots.txt"
+					robot_resp = requests.get(robot_site)
+					if robot_resp.ok:
+						#crawl through, generate list of disallowed
+						disallowed_lst = []
+						robot_soup = BeautifulSoup(robot_resp.text, 'html.parser')
+						#for link in soup.find_all(''):
+
+						robot_cache[parsed.netloc] = 
+				
+				#check crawl delay
+				#check if url can be accessed
+
+
+
 				print(robot_resp.text)
 				if url not in mem:
 					mem.add(url)
