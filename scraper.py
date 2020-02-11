@@ -42,10 +42,6 @@ def is_valid(mem, url):
             + r"|epub|dll|cnf|tgz|sha1"
             + r"|thmx|mso|arff|rtf|jar|csv"
             + r"|rm|smil|wmv|swf|wma|zip|rar|gz)$", parsed.path.lower())
-            
-            return True
-
-
         	#TODO:
         	#MAKE SURE TO INCLUDE SUBDOMAINS -- use re.match with parsed.netloc.
         	#AND CHECK ROBOT - make sure delay?? nothing is wrong with .5 seconds
