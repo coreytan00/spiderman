@@ -50,7 +50,7 @@ def is_valid(mem, url):
 			sub_bool5 = (re.match(r"(www.)?[-a-zA-Z0-9.]*.today.uci.edu", parsed.netloc) 
             	and (parsed.path == "/department/information_computer_sciences/"))
 			if (extbool and (sub_bool or sub_bool2 or sub_bool3 or sub_bool4 or sub_bool5)):
-				robot_site = parsed.netloc + "/robots.txt"
+				robot_site = parsed.scheme + "://" + parsed.netloc + "/robots.txt"
 				robot_resp = requests.get(robot_site)
 				print(robot_resp.json())
 				if url not in mem:
