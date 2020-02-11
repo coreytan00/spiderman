@@ -48,7 +48,7 @@ def is_valid(mem, url):
 			sub_bool3 = re.match(r"(www.)?[-a-zA-Z0-9.]*.informatics.uci.edu", parsed.netloc)
 			sub_bool4 = re.match(r"(www.)?[-a-zA-Z0-9.]*.stat.uci.edu", parsed.netloc)
 			sub_bool5 = re.match(r"(www.)?[-a-zA-Z0-9.]*.today.uci.edu", parsed.netloc) 
-            	and parsed.path == "/department/information_computer_sciences/"
+            	and (parsed.path == "/department/information_computer_sciences/")
 			return sub_bool
 			"""
 			
