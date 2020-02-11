@@ -48,11 +48,11 @@ def is_valid(mem, url):
         	#domainbool2 = (parsed.netloc == "www.today.uci.edu" and 
         	#			parsed.path == "/department/information_computer_sciences/")
         	#print(domainbool)
-			sub_bool  = re.match((www.)?[-a-zA-Z0-9.]*.ics.uci.edu, parsed.netloc)
-			sub_bool2 = re.match((www.)?[-a-zA-Z0-9.]*.cs.uci.edu, parsed.netloc)
-			sub_bool3 = re.match((www.)?[-a-zA-Z0-9.]*.informatics.uci.edu, parsed.netloc)
-			sub_bool4 = re.match((www.)?[-a-zA-Z0-9.]*.stat.uci.edu, parsed.netloc)
-			sub_bool5 = re.match((www.)?[-a-zA-Z0-9.]*.today.uci.edu, parsed.netloc) and 
+			sub_bool  = re.match(r"(www.)?[-a-zA-Z0-9.]*.ics.uci.edu", parsed.netloc)
+			sub_bool2 = re.match(r"(www.)?[-a-zA-Z0-9.]*.cs.uci.edu", parsed.netloc)
+			sub_bool3 = re.match(r"(www.)?[-a-zA-Z0-9.]*.informatics.uci.edu", parsed.netloc)
+			sub_bool4 = re.match(r"(www.)?[-a-zA-Z0-9.]*.stat.uci.edu", parsed.netloc)
+			sub_bool5 = re.match(r"(www.)?[-a-zA-Z0-9.]*.today.uci.edu", parsed.netloc) and 
 				parsed.path == "/department/information_computer_sciences/"
         	if (extbool and (sub_bool or sub_bool2 or sub_bool3 or sub_bool4 or sub_bool5)):
         		mem.add(url)
