@@ -28,7 +28,6 @@ def extract_next_links(url, resp):
 def is_valid(mem, url):
 	try:
 		parsed = urlparse(url)
-		print(parsed)
 		if parsed.scheme not in set(["http", "https"]):
 			return False
 		else:
@@ -52,6 +51,7 @@ def is_valid(mem, url):
 			if (extbool and (sub_bool or sub_bool2 or sub_bool3 or sub_bool4 or sub_bool5)):
 				if url not in mem:
 					mem.add(url)
+					print(url)
 					return True
 				else:
 					return False
