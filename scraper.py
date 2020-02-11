@@ -4,9 +4,9 @@ from urllib.parse import urlparse
 
 def scraper(mem, url, resp):
     links = extract_next_links(mem, url, resp)
-    return [link for link in links if is_valid(link)] #will be thrown in frontier by worker
+    return [link for link in links if is_valid(mem, link)] #will be thrown in frontier by worker
 
-def extract_next_links(mem, url, resp):
+def extract_next_links(url, resp):
     lst = []
     print("url: ", url)
     print("resp raw response: ", resp.raw_response)
@@ -18,22 +18,21 @@ def extract_next_links(mem, url, resp):
 	   	soup = BeautifulSoup(html_doc, 'html.parser')
 	   	for link in soup.find_all('a'):
 	   		hlink = link.get('href')
-	   		#check if in cache
-	   		if hlink not in mem:
-	   			mem.add(hlink)
-	   			lst.append(hlink)
+	   		lst.append(hlink)
     return lst
     # defend our position of low quality urls.
 
     #total number of words on a page
     #most common words
 
-def is_valid(url):
+def is_valid(mem, url):
     try:
         parsed = urlparse(url)
+        print(parsed)
         if parsed.scheme not in set(["http", "https"]):
             return False
         else:
+        	url = url - parsed.
         	extbool = not re.match(
             r".*\.(css|js|bmp|gif|jpe?g|ico"
             + r"|png|tiff?|mid|mp2|mp3|mp4"
@@ -49,7 +48,12 @@ def is_valid(url):
         	domainbool2 = (parsed.netloc == "www.today.uci.edu" and 
         				parsed.path == "/department/information_computer_sciences/")
         	#print(domainbool)
-        	return (extbool and (domainbool or domainbool2))
+        	if (extbool and (domainbool or domainbool2)):
+        		mem.add(url)
+        		return True
+        	else:
+        		return False
+
 
         	#TODO:
         	#MAKE SURE TO INCLUDE SUBDOMAINS -- use re.match with parsed.netloc.
