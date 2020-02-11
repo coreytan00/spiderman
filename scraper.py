@@ -42,7 +42,9 @@ def is_valid(mem, url):
 				+ r"|epub|dll|cnf|tgz|sha1"
 				+ r"|thmx|mso|arff|rtf|jar|csv"
 				+ r"|rm|smil|wmv|swf|wma|zip|rar|gz)$", parsed.path.lower())
-			
+			print("hola!")
+			return extbool
+			"""
 			sub_bool  = re.match(r"(www.)?[-a-zA-Z0-9.]*.ics.uci.edu", parsed.netloc)
             sub_bool2 = re.match(r"(www.)?[-a-zA-Z0-9.]*.cs.uci.edu", parsed.netloc)
             sub_bool3 = re.match(r"(www.)?[-a-zA-Z0-9.]*.informatics.uci.edu", parsed.netloc)
@@ -54,6 +56,8 @@ def is_valid(mem, url):
         		return True
         	else:
         		return False
+        	"""
+
 			#TODO:
 			#MAKE SURE TO INCLUDE SUBDOMAINS -- use re.match with parsed.netloc.
 			#AND CHECK ROBOT - make sure delay?? nothing is wrong with .5 seconds
