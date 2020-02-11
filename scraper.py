@@ -44,11 +44,17 @@ def is_valid(mem, url):
             + r"|rm|smil|wmv|swf|wma|zip|rar|gz)$", parsed.path.lower())
        		#check if in domain
        		#print(parsed.netloc)
-        	domainbool = parsed.netloc in set(DOMAINS) 
-        	domainbool2 = (parsed.netloc == "www.today.uci.edu" and 
-        				parsed.path == "/department/information_computer_sciences/")
+        	#domainbool = parsed.netloc in set(DOMAINS) 
+        	#domainbool2 = (parsed.netloc == "www.today.uci.edu" and 
+        	#			parsed.path == "/department/information_computer_sciences/")
         	#print(domainbool)
-        	if (extbool and (domainbool or domainbool2)):
+		sub_bool  = re.match((www.)?[-a-zA-Z0-9.]*.ics.uci.edu, parsed.netloc)
+		sub_bool2 = re.match((www.)?[-a-zA-Z0-9.]*.cs.uci.edu, parsed.netloc)
+		sub_bool3 = re.match((www.)?[-a-zA-Z0-9.]*.informatics.uci.edu, parsed.netloc)
+		sub_bool4 = re.match((www.)?[-a-zA-Z0-9.]*.stat.uci.edu, parsed.netloc)
+		sub_bool5 = re.match((www.)?[-a-zA-Z0-9.]*.today.uci.edu, parsed.netloc) and 
+				parsed.path == "/department/information_computer_sciences/"
+        	if (extbool and (sub_bool or sub_bool2 or sub_bool3 or sub_bool4 or sub_bool5)):
         		mem.add(url)
         		return True
         	else:
