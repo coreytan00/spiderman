@@ -3,54 +3,54 @@ from bs4 import BeautifulSoup
 from urllib.parse import urlparse
 
 def scraper(mem, url, resp):
-    links = extract_next_links(url, resp)
-    return [link for link in links if is_valid(mem, link)] #will be thrown in frontier by worker
+	links = extract_next_links(url, resp)
+	return [link for link in links if is_valid(mem, link)] #will be thrown in frontier by worker
 
 def extract_next_links(url, resp):
-    lst = []
-    print("url: ", url)
-    print("resp raw response: ", resp.raw_response)
-    print("resp .url: ", resp.url)
-    print("resp status: ", resp.status)
-    print("resp error: ", resp.error)
-    if 200<= resp.status < 300:
-	   	html_doc = resp.raw_response.text
-	   	soup = BeautifulSoup(html_doc, 'html.parser')
-	   	for link in soup.find_all('a'):
-	   		hlink = link.get('href')
-	   		lst.append(hlink)
-    return lst
-    # defend our position of low quality urls.
+	lst = []
+	print("url: ", url)
+	print("resp raw response: ", resp.raw_response)
+	print("resp .url: ", resp.url)
+	print("resp status: ", resp.status)
+	print("resp error: ", resp.error)
+	if 200<= resp.status < 300:
+		html_doc = resp.raw_response.text
+		soup = BeautifulSoup(html_doc, 'html.parser')
+		for link in soup.find_all('a'):
+			hlink = link.get('href')
+			lst.append(hlink)
+	return lst
+	# defend our position of low quality urls.
 
-    #total number of words on a page
-    #most common words
+	#total number of words on a page
+	#most common words
 
 def is_valid(mem, url):
-    try:
-        parsed = urlparse(url)
-        print(parsed)
-        if parsed.scheme not in set(["http", "https"]):
-            return False
-        else:
-        	#url = url - parsed.
-        	extbool = not re.match(
-            r".*\.(css|js|bmp|gif|jpe?g|ico"
-            + r"|png|tiff?|mid|mp2|mp3|mp4"
-            + r"|wav|avi|mov|mpeg|ram|m4v|mkv|ogg|ogv|pdf"
-            + r"|ps|eps|tex|ppt|pptx|doc|docx|xls|xlsx|names"
-            + r"|data|dat|exe|bz2|tar|msi|bin|7z|psd|dmg|iso"
-            + r"|epub|dll|cnf|tgz|sha1"
-            + r"|thmx|mso|arff|rtf|jar|csv"
-            + r"|rm|smil|wmv|swf|wma|zip|rar|gz)$", parsed.path.lower())
-            return extbool
-        	#TODO:
-        	#MAKE SURE TO INCLUDE SUBDOMAINS -- use re.match with parsed.netloc.
-        	#AND CHECK ROBOT - make sure delay?? nothing is wrong with .5 seconds
-        	#defragment urls?
+	try:
+		parsed = urlparse(url)
+		print(parsed)
+		if parsed.scheme not in set(["http", "https"]):
+			return False
+		else:
+			#url = url - parsed.
+			extbool = not re.match(
+				r".*\.(css|js|bmp|gif|jpe?g|ico"
+				+ r"|png|tiff?|mid|mp2|mp3|mp4"
+				+ r"|wav|avi|mov|mpeg|ram|m4v|mkv|ogg|ogv|pdf"
+				+ r"|ps|eps|tex|ppt|pptx|doc|docx|xls|xlsx|names"
+				+ r"|data|dat|exe|bz2|tar|msi|bin|7z|psd|dmg|iso"
+				+ r"|epub|dll|cnf|tgz|sha1"
+				+ r"|thmx|mso|arff|rtf|jar|csv"
+				+ r"|rm|smil|wmv|swf|wma|zip|rar|gz)$", parsed.path.lower())
+			return extbool
+			#TODO:
+			#MAKE SURE TO INCLUDE SUBDOMAINS -- use re.match with parsed.netloc.
+			#AND CHECK ROBOT - make sure delay?? nothing is wrong with .5 seconds
+			#defragment urls?
 
-    except TypeError:
-        print ("TypeError for ", parsed)
-        raise
+	except TypeError:
+		print ("TypeError for ", parsed)
+		raise
 
 DOMAINS = [
 	"www.ics.uci.edu",
