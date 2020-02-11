@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup
 from urllib.parse import urlparse
 
 def scraper(mem, url, resp):
-    links = extract_next_links(mem, url, resp)
+    links = extract_next_links(url, resp)
     return [link for link in links if is_valid(mem, link)] #will be thrown in frontier by worker
 
 def extract_next_links(url, resp):
