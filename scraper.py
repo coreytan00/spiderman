@@ -44,7 +44,8 @@ def is_valid(mem, url):
 				+ r"|rm|smil|wmv|swf|wma|zip|rar|gz)$", parsed.path.lower())
 			print("hola!")
 			sub_bool  = re.match(r"(www.)?[-a-zA-Z0-9.]*.ics.uci.edu", parsed.netloc)
-			return extbool
+			sub_bool2 = re.match(r"(www.)?[-a-zA-Z0-9.]*.cs.uci.edu", parsed.netloc)
+			return sub_bool
 			"""
 			
             sub_bool2 = re.match(r"(www.)?[-a-zA-Z0-9.]*.cs.uci.edu", parsed.netloc)
