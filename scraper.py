@@ -45,6 +45,9 @@ def is_valid(mem, url):
 			print("hola!")
 			sub_bool  = re.match(r"(www.)?[-a-zA-Z0-9.]*.ics.uci.edu", parsed.netloc)
 			sub_bool2 = re.match(r"(www.)?[-a-zA-Z0-9.]*.cs.uci.edu", parsed.netloc)
+			sub_bool3 = re.match(r"(www.)?[-a-zA-Z0-9.]*.informatics.uci.edu", parsed.netloc)
+			sub_bool4 = re.match(r"(www.)?[-a-zA-Z0-9.]*.stat.uci.edu", parsed.netloc)
+
 			return sub_bool
 			"""
 			
