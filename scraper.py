@@ -52,7 +52,7 @@ def is_valid(mem, url):
 			if (extbool and (sub_bool or sub_bool2 or sub_bool3 or sub_bool4 or sub_bool5)):
 				robot_site = parsed.scheme + "://" + parsed.netloc + "/robots.txt"
 				robot_resp = requests.get(robot_site)
-				print(robot_resp.json())
+				print(robot_resp.text)
 				if url not in mem:
 					mem.add(url)
 					return True
