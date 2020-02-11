@@ -49,25 +49,11 @@ def is_valid(mem, url):
 			sub_bool4 = re.match(r"(www.)?[-a-zA-Z0-9.]*.stat.uci.edu", parsed.netloc)
 			sub_bool5 = (re.match(r"(www.)?[-a-zA-Z0-9.]*.today.uci.edu", parsed.netloc) 
             	and (parsed.path == "/department/information_computer_sciences/"))
-			return sub_bool
-			"""
-			
-            sub_bool2 = re.match(r"(www.)?[-a-zA-Z0-9.]*.cs.uci.edu", parsed.netloc)
-            sub_bool3 = re.match(r"(www.)?[-a-zA-Z0-9.]*.informatics.uci.edu", parsed.netloc)
-            sub_bool4 = re.match(r"(www.)?[-a-zA-Z0-9.]*.stat.uci.edu", parsed.netloc)
-            sub_bool5 = re.match(r"(www.)?[-a-zA-Z0-9.]*.today.uci.edu", parsed.netloc) 
-            	and parsed.path == "/department/information_computer_sciences/"
-        	if (extbool and (sub_bool or sub_bool2 or sub_bool3 or sub_bool4 or sub_bool5)):
-        		mem.add(url)
-        		return True
-        	else:
-        		return False
-        	"""
-
-			#TODO:
-			#MAKE SURE TO INCLUDE SUBDOMAINS -- use re.match with parsed.netloc.
-			#AND CHECK ROBOT - make sure delay?? nothing is wrong with .5 seconds
-			#defragment urls?
+			if (extbool and (sub_bool or sub_bool2 or sub_bool3 or sub_bool4 or sub_bool5)):
+				mem.add(url)
+				return True
+			else:
+				return False
 
 	except TypeError:
 		print ("TypeError for ", parsed)
@@ -102,3 +88,8 @@ STOPWORDS = [
 	'whom', 'why', "why's", 'with', "won't", 'would', "wouldn't", 'you', "you'd",
 	"you'll", "you're", "you've", 'your', 'yours', 'yourself', 'yourselves'
 ]
+
+#TODO:
+#MAKE SURE TO INCLUDE SUBDOMAINS -- use re.match with parsed.netloc.
+#AND CHECK ROBOT - make sure delay?? nothing is wrong with .5 seconds
+#defragment urls?
