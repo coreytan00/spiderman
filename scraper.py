@@ -53,6 +53,15 @@ def is_valid(robot_cache, mem, url):
 			if (extbool and (sub_bool or sub_bool2 or sub_bool3 or sub_bool4 or sub_bool5)):
 				if parsed.netloc not in robot_cache:
 					robot_site = parsed.scheme + "://" + parsed.netloc + "/robots.txt"
+					"""
+					the game plan is:
+						create our similar download function (like the one provided)
+						so that we can ensure it downloads from the cache server. check
+						download.py. Read the response given(text/read/content/whatever),
+						overload can_fetch method so that we can grab the disallowed urls.
+						create a set of disallowed urls(complete with domain and path).
+						then check if netloc+path are in the disallowed set.
+
 					robot_resp = requests.get(robot_site)
 					if robot_resp.ok:
 						#crawl through, generate list of disallowed
