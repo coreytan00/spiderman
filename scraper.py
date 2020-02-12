@@ -55,12 +55,8 @@ def is_valid(config, robot_cache, robot_url_cache, mem, url):
 					robot_resp = download.download(robot_site, config, logger=None)
 					if 200<= robot_resp.status < 300:
 						robot_url_cache.add(parsed.netloc)
-						robot_txt = robot_resp.raw_response.text
+						robot_txt = robot_resp.raw_response.content
 						print(robot_txt)
-						parsed_robot = robotparser.RobotFileParser(robot_site)
-						print('reading here:')
-						parsed_robot.read()
-						print('reading end/')
 						#findall
 
 					"""
