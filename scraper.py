@@ -5,9 +5,9 @@ import requests
 from urllib import robotparser
 from utils import download
 
-def scraper(config, robot_cache, mem, url, resp):
+def scraper(config, robot_cache, robot_url_cache, mem, url, resp):
 	links = extract_next_links(url, resp)
-	return [link for link in links if is_valid(config, robot_cache, mem, link)] #will be thrown in frontier by worker
+	return [link for link in links if is_valid(config, robot_cache, robot_url_cache, mem, link)] #will be thrown in frontier by worker
 
 def extract_next_links(url, resp):
 	lst = []
@@ -52,10 +52,11 @@ def is_valid(config, robot_cache, mem, url):
 			sub_bool5 = (re.match(r"(www.)?[-a-zA-Z0-9.]*.today.uci.edu", parsed.netloc) 
             	and (parsed.path == "/department/information_computer_sciences/"))
 			if (extbool and (sub_bool or sub_bool2 or sub_bool3 or sub_bool4 or sub_bool5)):
-				if parsed.netloc not in robot_cache:
+				if parsed.netloc not in robot_url_cache:
 					robot_site = parsed.scheme + "://" + parsed.netloc + "/robots.txt"
 					robot_resp = download.download(robot_site, config, logger=None)
 					if 200<= robot_resp.status < 300:
+						robot_url_cache.add(parsed.netloc)
 						robot_txt = robot_resp.raw_response.text
 						print(robot_txt)
 						#findall
