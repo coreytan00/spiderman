@@ -57,9 +57,10 @@ def is_valid(config, robot_cache, robot_url_cache, mem, url):
 						robot_url_cache.add(parsed.netloc)
 						robot_txt = robot_resp.raw_response.text
 						robot_txt2 = robot_resp.raw_response.content
-						for line in robot_txt:
+						print(robot_txt)
+						#for line in robot_txt:
 							#line = line.rstrip("\n")
-							print(line)
+						#	print(line)
 						#findall
 
 					"""
