@@ -11,8 +11,6 @@ def scraper(config, robot_cache, robot_url_cache, mem, url, resp):
 
 def extract_next_links(url, resp):
 	lst = []
-	print("url: ", url)
-	print("resp raw response: ", resp.raw_response)
 	print("resp .url: ", resp.url)
 	print("resp status: ", resp.status)
 	print("resp error: ", resp.error)
@@ -60,6 +58,7 @@ def is_valid(config, robot_cache, robot_url_cache, mem, url):
 						robot_txt = robot_resp.raw_response.text
 						print(robot_txt)
 						parsed_robot = robotparser.RobotFileParser(robot_site)
+						print('reading here:')
 						parsed_robot.read()
 						#findall
 
