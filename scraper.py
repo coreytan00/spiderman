@@ -60,6 +60,7 @@ def is_valid(config, robot_cache, robot_url_cache, mem, url):
 						parsed_robot = robotparser.RobotFileParser(robot_site)
 						print('reading here:')
 						parsed_robot.read()
+						print('reading end/')
 						#findall
 
 					"""
