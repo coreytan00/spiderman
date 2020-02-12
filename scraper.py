@@ -54,7 +54,7 @@ def is_valid(config, robot_cache, mem, url):
 			if (extbool and (sub_bool or sub_bool2 or sub_bool3 or sub_bool4 or sub_bool5)):
 				if parsed.netloc not in robot_cache:
 					robot_site = parsed.scheme + "://" + parsed.netloc + "/robots.txt"
-					robot_resp = download(robot_site, config, logger=None)
+					robot_resp = download.download(robot_site, config, logger=None)
 					if 200<= robot_resp.status < 300:
 						robot_txt = robot_resp.raw_response.decode()
 						print(robot_txt)
