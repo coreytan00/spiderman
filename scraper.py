@@ -55,8 +55,11 @@ def is_valid(config, robot_cache, robot_url_cache, mem, url):
 					robot_resp = download.download(robot_site, config, logger=None)
 					if 200<= robot_resp.status < 300:
 						robot_url_cache.add(parsed.netloc)
-						robot_txt = robot_resp.raw_response.content
-						print(robot_txt)
+						robot_txt = robot_resp.raw_response.text
+						robot_txt2 = robot_resp.raw_response.content
+						for line in robot_txt:
+							line = line.rstrip("\n")
+							print(line)
 						#findall
 
 					"""
