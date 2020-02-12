@@ -3,10 +3,11 @@ from bs4 import BeautifulSoup
 from urllib.parse import urlparse
 import requests
 from urllib import robotparser
+from utils import download
 
-def scraper(robot_cache, mem, url, resp):
+def scraper(config, robot_cache, mem, url, resp):
 	links = extract_next_links(url, resp)
-	return [link for link in links if is_valid(robot_cache, mem, link)] #will be thrown in frontier by worker
+	return [link for link in links if is_valid(config, robot_cache, mem, link)] #will be thrown in frontier by worker
 
 def extract_next_links(url, resp):
 	lst = []
@@ -53,6 +54,12 @@ def is_valid(robot_cache, mem, url):
 			if (extbool and (sub_bool or sub_bool2 or sub_bool3 or sub_bool4 or sub_bool5)):
 				if parsed.netloc not in robot_cache:
 					robot_site = parsed.scheme + "://" + parsed.netloc + "/robots.txt"
+					robot_resp = download(robot_site, config, logger=None)
+					if 200<= robot_resp.status < 300:
+						robot_txt = robot_resp.raw_response.decode()
+						print(robot_txt)
+						#findall
+
 					"""
 					the game plan is:
 						create our similar download function (like the one provided)
@@ -71,12 +78,10 @@ def is_valid(robot_cache, mem, url):
 
 						robot_cache[parsed.netloc] = 
 				
-				#check crawl delay
-				#check if url can be accessed
-
-
-
-				print(robot_resp.text)
+					#check crawl delay
+					#check if url can be accessed
+					"""
+					
 				if url not in mem:
 					mem.add(url)
 					return True
