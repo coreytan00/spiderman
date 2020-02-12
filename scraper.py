@@ -28,7 +28,7 @@ def extract_next_links(url, resp):
 	#total number of words on a page
 	#most common words
 
-def is_valid(config, robot_cache, mem, url):
+def is_valid(config, robot_cache, robot_url_cache, mem, url):
 	try:
 		parsed = urlparse(url)
 		if parsed.scheme not in set(["http", "https"]):
