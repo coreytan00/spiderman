@@ -56,7 +56,7 @@ def is_valid(config, robot_cache, mem, url):
 					robot_site = parsed.scheme + "://" + parsed.netloc + "/robots.txt"
 					robot_resp = download.download(robot_site, config, logger=None)
 					if 200<= robot_resp.status < 300:
-						robot_txt = robot_resp.raw_response.decode()
+						robot_txt = robot_resp.raw_response.text
 						print(robot_txt)
 						#findall
 
