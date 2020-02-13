@@ -113,12 +113,10 @@ def is_valid(config, robot_cache_a, robot_cache_d, robot_url_cache, mem, mem2, u
 					doc = resp.raw_response.text
 					soup = BeautifulSoup(doc, 'html.parser')
 					#filter text from site
-					#[s.extract() for s in soup(['style', 'script', '[document]', 'head', 'title'])]
-					#text_only = soup.getText()
-					#filtered_text = text_only.split()
-					filt = soup.getText().split()
-					print(filt)
-					s = Simhash(filt)
+					[s.extract() for s in soup(['style', 'script', '[document]', 'head', 'title'])]
+					text_only = soup.getText()
+					filtered_text = text_only.split()
+					s = Simhash(filtered_text)
 
 					index=SimhashIndex(mem2, k=100)
 					if index.get_near_dups(s) != []:
