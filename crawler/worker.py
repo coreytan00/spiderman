@@ -14,7 +14,7 @@ class Worker(Thread):
         
     def run(self):
         start_time = time.time()
-        mem = dict() #memory cache of unique urls
+        mem = list() #memory cache of unique urls
         robot_cache_a = set() #memory cache of allowed urls
         robot_cache_d = set() #memory cache of disallowed urls
         robot_url_cache = set() #memory cache of crawled robots.txt
@@ -36,6 +36,6 @@ class Worker(Thread):
         print("Number of unique urls: ", len(mem))
         print("My program took", time.time() - start_time, "seconds to run")
         print("All unique urls: ")
-        for url in mem.keys():
-            print(url)
+        for url in mem:
+            print(url[0])
         
