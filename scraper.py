@@ -7,10 +7,11 @@ from utils import download
 import requests
 from simhash import Simhash, SimhashIndex
 
-def scraper(config, robot_cache_a, robot_cache_d, robot_url_cache, mem, mem2, url, resp):
+def scraper(config, robot_cache_a, robot_cache_d, robot_url_cache, mem, mem2, 
+	longest_page, common_dict, ics_subdomains, url, resp):
 	links = extract_next_links(url, resp)
 	return [link for link in links if is_valid(config, robot_cache_a, robot_cache_d, 
-		robot_url_cache, mem, mem2, link)] #will be thrown in frontier by worker
+		robot_url_cache, mem, mem2, longest_page, common_dict, ics_subdomains, link)] 
 
 def extract_next_links(url, resp):
 	lst = []
@@ -27,7 +28,8 @@ def extract_next_links(url, resp):
 	#total number of words on a page
 	#most common words
 
-def is_valid(config, robot_cache_a, robot_cache_d, robot_url_cache, mem, mem2, url):
+def is_valid(config, robot_cache_a, robot_cache_d, robot_url_cache, mem, mem2, 
+	longest_page, common_dict, ics_subdomains, url):
 	"""
 	mem = set() #memory cache of unique urls
 	robot_cache_a = set() #memory cache of allowed urls
@@ -119,23 +121,23 @@ def is_valid(config, robot_cache_a, robot_cache_d, robot_url_cache, mem, mem2, u
 						#LOW INFO CONTENT
 						if len(filtered_text)<20:
 							return False
-						s = Simhash(filtered_text)
 
-						index=SimhashIndex(mem2, k=3)
+						s = Simhash(filtered_text)
+						index=SimhashIndex(mem2) #k=2
 						if index.get_near_dups(s) != []:
 							print('this is running insteawd')
 							return False
 						else:
 							print('this runs')
 							if url in robot_cache_a:
-								print("URL ADDED:", url)
+								check(filtered_text, common_dict, longest_page, ics_subdomains, sub_bool, parsed.netloc, url)
 								mem.add(url)
 								mem2.append((str(url),s))
 								return True
 							elif url in robot_cache_d:
 								return False
 							else:
-								print("URL ADDED:", url)
+								check(filtered_text, common_dict, longest_page, ics_subdomains, sub_bool, parsed.netloc, url)
 								mem.add(url)
 								mem2.append((str(url),s))
 								return True
@@ -145,6 +147,21 @@ def is_valid(config, robot_cache_a, robot_cache_d, robot_url_cache, mem, mem2, u
 	except TypeError:
 		print ("TypeError for ", parsed)
 		raise
+
+def check(filtered_text, common_dict, longest_page, ics_subdomains, sub_bool, site, url)
+	#find longest page in terms of number of words.
+	if len(filtered_text) > longest_page[1]:
+		longest_page[0] = url
+		longest_page[1] = len(filtered_text)
+	#most common words
+	for word in filtered_text:
+		if word not in STOPWORDS:
+			common_dict[word] +=1
+
+	#ics subdomains
+	if sub_bool: #that means it is ics domain
+		ics_subdomains[site].add(url)
+
 
 #https://github.com/python/cpython/blob/master/Lib/urllib/robotparser.py#L144
 #TODO

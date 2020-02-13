@@ -4,6 +4,7 @@ from utils.download import download
 from utils import get_logger
 from scraper import scraper
 import time
+from collections import defaultdict
 
 class Worker(Thread):
     def __init__(self, worker_id, config, frontier):
@@ -19,6 +20,9 @@ class Worker(Thread):
         robot_cache_a = set() #memory cache of allowed urls
         robot_cache_d = set() #memory cache of disallowed urls
         robot_url_cache = set() #memory cache of crawled robots.txt
+        longest_page = ["",0]
+        common_dict = defaultdict(int)
+        ics_subdomains = defaultdict(set)
         while True:
             tbd_url = self.frontier.get_tbd_url()
             if not tbd_url:
@@ -29,7 +33,8 @@ class Worker(Thread):
                 f"Downloaded {tbd_url}, status <{resp.status}>, "
                 f"using cache {self.config.cache_server}.")
             scraped_urls = scraper(self.config, robot_cache_a, robot_cache_d, 
-                robot_url_cache, mem, mem2, tbd_url, resp)
+                robot_url_cache, mem, mem2, longest_page, common_dict, 
+                ics_subdomains, tbd_url, resp)
             for scraped_url in scraped_urls:
                 self.frontier.add_url(scraped_url)
             self.frontier.mark_url_complete(tbd_url)
@@ -37,4 +42,9 @@ class Worker(Thread):
         print("Number of unique urls: ", len(mem))
         print("My program took", time.time() - start_time, "seconds to run")
         print("All unique urls: ", mem)
+        print("longest_page: ", longest_page[0], "has", longest_page[1], "words")
+        print("most common words: ")
         
+        print("ics_subdomains: ", ics_subdomains)
+
+
