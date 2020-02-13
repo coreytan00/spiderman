@@ -40,8 +40,8 @@ def is_valid(config, robot_cache_a, robot_cache_d, robot_url_cache, mem, url):
 		if parsed.scheme not in set(["http", "https"]):
 			return False
 		else:
-			print(type(url))
-			print(type(parsed.fragment))
+			print(url)
+			print(parsed.fragment)
 
 			url = (str(url) - str(parsed.fragment))
 
