@@ -106,7 +106,7 @@ def is_valid(config, robot_cache_a, robot_cache_d, robot_url_cache, mem, url, re
 				#doesn't necessarily mean there is a robots.txt
 				if url not in mem:
 					#simhash here
-					index=SimhashIndex(mem,k=10)
+					#index=SimhashIndex(mem,k=10)
 					"""
 					doc = resp.raw_response.text
 					soup = BeautifulSoup(doc, 'html.parser')
