@@ -116,7 +116,9 @@ def is_valid(config, robot_cache_a, robot_cache_d, robot_url_cache, mem, mem2, u
 					#[s.extract() for s in soup(['style', 'script', '[document]', 'head', 'title'])]
 					#text_only = soup.getText()
 					#filtered_text = text_only.split()
-					s = Simhash(soup.getText().split())
+					filt = soup.getText().split()
+					print(filt)
+					s = Simhash(filt)
 
 					index=SimhashIndex(mem2, k=100)
 					if index.get_near_dups(s) != []:
