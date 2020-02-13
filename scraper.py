@@ -114,6 +114,8 @@ def is_valid(config, robot_cache_a, robot_cache_d, robot_url_cache, mem, url, re
 					text_only = soup.getText()
 					filtered_text = " ".join(text_only.split())
 					s = Simhash(get_features(filtered_text))
+					index=SimhashIndex(mem,k=3)
+
 					"""
 					if index.get_near_dups(s) != []:
 						return False
