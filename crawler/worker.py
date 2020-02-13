@@ -42,17 +42,17 @@ class Worker(Thread):
         print("Number of unique urls: ", len(mem))
         print("My program took", time.time() - start_time, "seconds to run")
         print("All unique urls: ", mem)
-        print("longest_page: ", longest_page[0], "has", longest_page[1], "words")
-        print("most common words: ")
+        print("Longest_page: ", longest_page[0], "has", longest_page[1], "words")
+        print("Most common words: ")
         count = 0
         for k,v in sorted(common_dict.items(), key=lambda x: (-1*x[1], x[0])):
-            print(k, v)
+            print(k, " -> ", v)
             count +=1
             if count == 50:
                 break
-                
+
         print("ics_subdomains: ")
         for k,v in sorted(ics_subdomains.items()):
-            print(k, v)
+            print(k, " -> ", v)
 
 
