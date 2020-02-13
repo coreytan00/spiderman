@@ -40,9 +40,7 @@ def is_valid(config, robot_cache_a, robot_cache_d, robot_url_cache, mem, url):
 		if parsed.scheme not in set(["http", "https"]):
 			return False
 		else:
-			#url = url - parsed.
-			#format for robot_cache_a and robot_cache_d
-			scheme_dom_path = parsed.scheme + "://" + parsed.netloc + parsed.path
+			url = url - parsed.fragment
 			extbool = not re.match(
 				r".*\.(css|js|bmp|gif|jpe?g|ico"
 				+ r"|png|tiff?|mid|mp2|mp3|mp4"
@@ -82,14 +80,18 @@ def is_valid(config, robot_cache_a, robot_cache_d, robot_url_cache, mem, url):
 				#else
 				#found in robot_url_cache - just means it's been checked.
 				#doesn't necessarily mean there is a robots.txt
-				if scheme_dom_path in robot_cache_a:
-					if scheme_dom_path not in mem:
-						mem.add(scheme_dom_path)
+				if url not in mem:
+					if url in robot_cache_a:
+						mem.add(url)
 						return True
-					else:
+					elif url in robot_cache_d:
 						return False
-				elif scheme_dom_path in robot_cache_d:
+					else:
+						mem.add(url)
+						return True
+				else:
 					return False
+
 
 	except TypeError:
 		print ("TypeError for ", parsed)
