@@ -5,7 +5,6 @@ from utils import get_logger
 from scraper import scraper
 import time
 
-
 class Worker(Thread):
     def __init__(self, worker_id, config, frontier):
         self.logger = get_logger(f"Worker-{worker_id}", "Worker")
@@ -15,7 +14,7 @@ class Worker(Thread):
         
     def run(self):
         start_time = time.time()
-        mem = set() #memory cache of unique urls
+        mem = dict() #memory cache of unique urls
         robot_cache_a = set() #memory cache of allowed urls
         robot_cache_d = set() #memory cache of disallowed urls
         robot_url_cache = set() #memory cache of crawled robots.txt
@@ -36,4 +35,7 @@ class Worker(Thread):
             time.sleep(self.config.time_delay)
         print("Number of unique urls: ", len(mem))
         print("My program took", time.time() - start_time, "seconds to run")
-        print("All unique urls: ", mem)
+        print("All unique urls: ")
+        for url in mem.keys():
+            print(url)
+        

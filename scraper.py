@@ -5,11 +5,12 @@ from urllib.parse import unquote
 from urllib import robotparser
 from utils import download
 import requests
+from simhash import Simhash, SimhashIndex
 
 def scraper(config, robot_cache_a, robot_cache_d, robot_url_cache, mem, url, resp):
 	links = extract_next_links(url, resp)
 	return [link for link in links if is_valid(config, robot_cache_a, robot_cache_d, 
-		robot_url_cache, mem, link)] #will be thrown in frontier by worker
+		robot_url_cache, mem, link, resp)] #will be thrown in frontier by worker
 
 def extract_next_links(url, resp):
 	lst = []
@@ -25,7 +26,7 @@ def extract_next_links(url, resp):
 	#total number of words on a page
 	#most common words
 
-def is_valid(config, robot_cache_a, robot_cache_d, robot_url_cache, mem, url):
+def is_valid(config, robot_cache_a, robot_cache_d, robot_url_cache, mem, url, resp):
 	"""
 	mem = set() #memory cache of unique urls
 	robot_cache_a = set() #memory cache of allowed urls
@@ -104,19 +105,24 @@ def is_valid(config, robot_cache_a, robot_cache_d, robot_url_cache, mem, url):
 				#found in robot_url_cache - just means it's been checked.
 				#doesn't necessarily mean there is a robots.txt
 				if url not in mem:
-					if url in robot_cache_a:
-						mem.add(url)
-						print(URL ADDED: url)
-						return True
-					elif url in robot_cache_d:
+					#simhash
+					index=SimhashIndex(mem,k=10)
+					s = Simhash(get_features(resp.raw_response.text))
+					if index.get_near_dups(s) != []:
 						return False
 					else:
-						print(URL ADDED: url)
-						mem.add(url)
-						return True
+						if url in robot_cache_a:
+							mem[str(url)] = s
+							print(URL ADDED: url)
+							return True
+						elif url in robot_cache_d:
+							return False
+						else:
+							print(URL ADDED: url)
+							mem[str(url)] = s
+							return True
 				else:
 					return False
-
 
 	except TypeError:
 		print ("TypeError for ", parsed)
@@ -126,10 +132,9 @@ def is_valid(config, robot_cache_a, robot_cache_d, robot_url_cache, mem, url):
 #TODO
 def parse(parsed, robot_txt, robot_cache_a, robot_cache_d):
 	parsed_robot = robot_txt.splitlines()
-
-	state = 0
 	#state = 0 --nothing
 	#state = 1 --useragent * found
+	state = 0
 
 	for line in parsed_robot:
 		line = line.split()
@@ -146,19 +151,12 @@ def parse(parsed, robot_txt, robot_cache_a, robot_cache_d):
 					robot_cache_d.add(parsed.scheme + "://" + parsed.netloc + value)
 				elif key == "allow":
 					robot_cache_a.add(parsed.scheme + "://" + parsed.netloc + value)
-				"""
-	            elif key == "crawl-delay":
-	            	if value.strip().isdigit():
-	            		delay = int(value)
-	           
-            	elif key == "request-rate": #pages per second
-            		numbers = value.split('/')
-            		# check if all values are sane
-            		if (len(numbers) == 2 and numbers[0].strip().isdigit() 
-            			and numbers[1].strip().isdigit()):
-            			#entry.req_rate = RequestRate(int(numbers[0]), int(numbers[1]))
-                    	rr = (int(numbers[0]), int(numbers[1])
-                """
+
+def get_features(text):
+	width = 20
+	text=text.lower()
+	text=re.sub(r'[^\w]+','',text)
+	return [text[i:i+width]for i in range(max(len(text)-width + 1, 1))]
 
 STOPWORDS = [
 	'a', 'about', 'above', 'after', 'again', 'against', 'all', 'am', 'an', 
