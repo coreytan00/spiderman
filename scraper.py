@@ -168,7 +168,7 @@ def parse(parsed, robot_txt, robot_cache_a, robot_cache_d):
 					robot_cache_a.add(parsed.scheme + "://" + parsed.netloc + value)
 
 def get_features(text):
-	width = 3
+	width = 20
 	text=text.lower()
 	text=re.sub(r'[^\w]+','',text)
 	return [text[i:i+width]for i in range(max(len(text)-width + 1, 1))]
