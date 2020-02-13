@@ -104,6 +104,7 @@ def is_valid(config, robot_cache_a, robot_cache_d, robot_url_cache, mem, url, re
 				#else
 				#found in robot_url_cache - just means it's been checked.
 				#doesn't necessarily mean there is a robots.txt
+				print("MEM", mem)
 				if url not in mem:
 					#simhash here
 					index=SimhashIndex(mem,k=10)
