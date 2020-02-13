@@ -113,24 +113,24 @@ def is_valid(config, robot_cache_a, robot_cache_d, robot_url_cache, mem, url, re
 					text_only = soup.getText()
 					filtered_text = " ".join(text_only.split())
 					s = Simhash(get_features(filtered_text))
-					"""
+					
 					if len(mem) != 0:
 						index=SimhashIndex(mem,k=10)
 						if index.get_near_dups(s) != []:
 							return False
 					
 					else:
-					"""
-					if url in robot_cache_a:
-						print("URL ADDED:", url)
-						mem[str(url)] = s
-						return True
-					elif url in robot_cache_d:
-						return False
-					else:
-						print("URL ADDED:", url)
-						mem[str(url)] = s
-						return True
+					
+						if url in robot_cache_a:
+							print("URL ADDED:", url)
+							mem[str(url)] = s
+							return True
+						elif url in robot_cache_d:
+							return False
+						else:
+							print("URL ADDED:", url)
+							mem[str(url)] = s
+							return True
 				else:
 					return False
 
@@ -163,7 +163,7 @@ def parse(parsed, robot_txt, robot_cache_a, robot_cache_d):
 					robot_cache_a.add(parsed.scheme + "://" + parsed.netloc + value)
 
 def get_features(text):
-	width = 20
+	width = 3
 	text=text.lower()
 	text=re.sub(r'[^\w]+','',text)
 	return [text[i:i+width]for i in range(max(len(text)-width + 1, 1))]
