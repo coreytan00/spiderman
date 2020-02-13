@@ -121,18 +121,18 @@ def is_valid(config, robot_cache_a, robot_cache_d, robot_url_cache, mem, url, re
 							return False
 						"""
 						print('yep')
+						return False
+						
+					if url in robot_cache_a:
+						print("URL ADDED:", url)
+						mem[str(url)] = s
+						return True
+					elif url in robot_cache_d:
+						return False
 					else:
-					
-						if url in robot_cache_a:
-							print("URL ADDED:", url)
-							mem[str(url)] = s
-							return True
-						elif url in robot_cache_d:
-							return False
-						else:
-							print("URL ADDED:", url)
-							mem[str(url)] = s
-							return True
+						print("URL ADDED:", url)
+						mem[str(url)] = s
+						return True
 				else:
 					return False
 
