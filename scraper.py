@@ -2,9 +2,9 @@ import re
 from bs4 import BeautifulSoup
 from urllib.parse import urlparse
 from urllib.parse import unquote
-import requests
 from urllib import robotparser
 from utils import download
+import requests
 
 def scraper(config, robot_cache, robot_url_cache, mem, url, resp):
 	links = extract_next_links(url, resp)
@@ -108,7 +108,7 @@ def parse(parsed_robot):
 		line = line.split()
 		if len(line) == 2:
 			key = line[0].strip().lower()
-			value = urllib.parse.unquote(line[1].strip())
+			value = unquote(line[1].strip())
 			print(key, "TO", value)
 		else:
 			print("WHATISTHIS", line)
