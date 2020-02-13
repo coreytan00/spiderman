@@ -16,6 +16,7 @@ def extract_next_links(url, resp):
 	lst = []
 	if 200<= resp.status < 300:
 		html_doc = resp.raw_response.text
+		print(resp.url)
 		soup = BeautifulSoup(html_doc, 'html.parser')
 		for link in soup.find_all('a'):
 			hlink = link.get('href')
