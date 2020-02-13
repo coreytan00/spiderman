@@ -115,6 +115,7 @@ def is_valid(config, robot_cache_a, robot_cache_d, robot_url_cache, mem, url, re
 					s = Simhash(get_features(filtered_text))
 					index=SimhashIndex(mem,k=10)
 					if index.get_near_dups(s) != []:
+						print(runs)
 						return False
 					else:
 						if url in robot_cache_a:
