@@ -104,12 +104,14 @@ def is_valid(config, robot_cache_a, robot_cache_d, robot_url_cache, mem, url, re
 				#else
 				#found in robot_url_cache - just means it's been checked.
 				#doesn't necessarily mean there is a robots.txt
-				print("MEM", mem)
 				if url not in mem:
 					#simhash here
 					index=SimhashIndex(mem,k=10)
-					print(resp.raw_response.text)
-					s = Simhash(get_features(resp.raw_response.text))
+					doc = resp.raw_response.text
+					soup = BeautifulSoup(doc, 'html.parser')
+					[s.extract() for s in soup(['style', 'script', '[document]', 'head', 'title'])]
+					text_only = soup.getText()
+					s = Simhash(get_features(text_only))
 					if index.get_near_dups(s) != []:
 						return False
 					else:
