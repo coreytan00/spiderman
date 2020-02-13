@@ -102,7 +102,6 @@ def is_valid(config, robot_cache_a, robot_cache_d, robot_url_cache, mem, url):
 #TODO
 def parse(parsed, robot_txt, robot_cache_a, robot_cache_d):
 	parsed_robot = robot_txt.splitlines()
-	print(parsed_robot)
 
 	state = 0
 	#state = 0 --nothing
