@@ -106,34 +106,39 @@ def is_valid(config, robot_cache_a, robot_cache_d, robot_url_cache, mem, mem2, u
 				#found in robot_url_cache - just means it's been checked.
 				#doesn't necessarily mean there is a robots.txt
 				if url not in mem:
-					site_resp = download.download(url, config, logger=None)
-					#simhash here
-					doc = site_resp.raw_response.text
-					soup = BeautifulSoup(doc, 'html.parser')
-					#filter text from site
-					[s.extract() for s in soup(['style', 'script', '[document]', 'head', 'title'])]
-					text_only = soup.getText()
-					filtered_text = text_only.split()
-					s = Simhash(filtered_text)
+					site_resp = requests.get(url)
+					if site_resp.ok:
+						#simhash here
+						doc = site_resp.text
+						soup = BeautifulSoup(doc, 'html.parser')
+						#filter text from site
+						[s.extract() for s in soup(['style', 'script', '[document]', 'head', 'title'])]
+						text_only = soup.getText()
+						filtered_text = text_only.split()
 
-					index=SimhashIndex(mem2, k=3)
-					if index.get_near_dups(s) != []:
-						print('this is running insteawd')
-						return False
-					else:
-						print('this runs')
-						if url in robot_cache_a:
-							print("URL ADDED:", url)
-							mem.add(url)
-							mem2.append((str(url),s))
-							return True
-						elif url in robot_cache_d:
+						#LOW INFO CONTENT
+						if len(filtered_text)<20:
+							return False
+						s = Simhash(filtered_text)
+
+						index=SimhashIndex(mem2, k=3)
+						if index.get_near_dups(s) != []:
+							print('this is running insteawd')
 							return False
 						else:
-							print("URL ADDED:", url)
-							mem.add(url)
-							mem2.append((str(url),s))
-							return True
+							print('this runs')
+							if url in robot_cache_a:
+								print("URL ADDED:", url)
+								mem.add(url)
+								mem2.append((str(url),s))
+								return True
+							elif url in robot_cache_d:
+								return False
+							else:
+								print("URL ADDED:", url)
+								mem.add(url)
+								mem2.append((str(url),s))
+								return True
 				else:
 					return False
 
