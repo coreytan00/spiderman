@@ -101,15 +101,16 @@ def is_valid(config, robot_cache, robot_url_cache, mem, url):
 #https://github.com/python/cpython/blob/master/Lib/urllib/robotparser.py#L144
 #TODO
 def parse(parsed_robot):
+	state = 0
+	entry = robotparser.Entry()
+	for line in parsed_robot:
+		line = line.splitlines()
+		print(line)
 	# states:
         #   0: start state
         #   1: saw user-agent line
         #   2: saw an allow or disallow line
-    state = 0
-    entry = robotparser.Entry()
-	for line in parsed_robot:
-		line = line.splitlines()
-		print(line)
+        
 		"""
 		if len(line) == 2:
 			#check
