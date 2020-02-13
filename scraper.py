@@ -51,7 +51,7 @@ def is_valid(config, robot_cache_a, robot_cache_d, robot_url_cache, mem, url):
 				+ r"|data|dat|exe|bz2|tar|msi|bin|7z|psd|dmg|iso"
 				+ r"|epub|dll|cnf|tgz|sha1"
 				+ r"|thmx|mso|arff|rtf|jar|csv"
-				+ r"|rm|smil|wmv|swf|wma|zip|rar|gz)$", parsed.path.lower())
+				+ r"|rm|smil|wmv|swf|wma|zip|rar|gz)$", [parsed.path.lower(), parsed.query.lower()])
 	
 			extbool2 = not re.match(
 				r".*/(css|js|bmp|gif|jpe?g|ico"
