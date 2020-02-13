@@ -106,21 +106,19 @@ def is_valid(config, robot_cache_a, robot_cache_d, robot_url_cache, mem, url, re
 				#doesn't necessarily mean there is a robots.txt
 				if url not in mem:
 					#simhash here
-					#index=SimhashIndex(mem,k=10)
-					mem["test"] = "xd"
-					doc = resp.raw_response.text
-					soup = BeautifulSoup(doc, 'html.parser')
-					[s.extract() for s in soup(['style', 'script', '[document]', 'head', 'title'])]
-					text_only = soup.getText()
-					filtered_text = " ".join(text_only.split())
-					s = Simhash(get_features(filtered_text))
-					index=SimhashIndex(mem,k=3)
+					if len(mem) != 0:
+						index=SimhashIndex(mem,k=10)
+						doc = resp.raw_response.text
+						soup = BeautifulSoup(doc, 'html.parser')
+						[s.extract() for s in soup(['style', 'script', '[document]', 'head', 'title'])]
+						text_only = soup.getText()
+						filtered_text = " ".join(text_only.split())
+						s = Simhash(get_features(filtered_text))
+						index=SimhashIndex(mem,k=10)
 
-					"""
-					if index.get_near_dups(s) != []:
-						return False
-					else:
-						"""
+						if index.get_near_dups(s) != []:
+							return False
+							
 					if url in robot_cache_a:
 						print("URL ADDED:", url)
 						mem[str(url)] = "xd"
