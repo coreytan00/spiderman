@@ -104,13 +104,19 @@ def parse(parsed_robot):
 	state = 0
 	entry = robotparser.Entry()
 	for line in parsed_robot:
-		line = line.splitlines()
-		print(line)
+		line = line.split()
+		if len(line) == 2:
+			key = line[0].strip().lower()
+			value = urllib.parse.unquote(line[1].strip())
+			print(key, "TO", value)
+		else:
+			print("WHATISTHIS", line)
+
 	# states:
         #   0: start state
         #   1: saw user-agent line
         #   2: saw an allow or disallow line
-        
+
 		"""
 		if len(line) == 2:
 			#check
