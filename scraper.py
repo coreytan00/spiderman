@@ -51,9 +51,19 @@ def is_valid(config, robot_cache_a, robot_cache_d, robot_url_cache, mem, url):
 				+ r"|data|dat|exe|bz2|tar|msi|bin|7z|psd|dmg|iso"
 				+ r"|epub|dll|cnf|tgz|sha1"
 				+ r"|thmx|mso|arff|rtf|jar|csv"
-				+ r"|rm|smil|wmv|swf|wma|zip|rar|gz)$", [parsed.path.lower(), parsed.query.lower()])
-	
+				+ r"|rm|smil|wmv|swf|wma|zip|rar|gz)$", parsed.path.lower())
+
 			extbool2 = not re.match(
+				r".*\.(css|js|bmp|gif|jpe?g|ico"
+				+ r"|png|tiff?|mid|mp2|mp3|mp4"
+				+ r"|wav|avi|mov|mpeg|ram|m4v|mkv|ogg|ogv|pdf"
+				+ r"|ps|eps|tex|ppt|pptx|doc|docx|xls|xlsx|names"
+				+ r"|data|dat|exe|bz2|tar|msi|bin|7z|psd|dmg|iso"
+				+ r"|epub|dll|cnf|tgz|sha1"
+				+ r"|thmx|mso|arff|rtf|jar|csv"
+				+ r"|rm|smil|wmv|swf|wma|zip|rar|gz)$", parsed.query.lower())
+	
+			extbool3 = not re.match(
 				r".*/(css|js|bmp|gif|jpe?g|ico"
 				+ r"|png|tiff?|mid|mp2|mp3|mp4"
 				+ r"|wav|avi|mov|mpeg|ram|m4v|mkv|ogg|ogv|pdf"
@@ -62,7 +72,8 @@ def is_valid(config, robot_cache_a, robot_cache_d, robot_url_cache, mem, url):
 				+ r"|epub|dll|cnf|tgz|sha1"
 				+ r"|thmx|mso|arff|rtf|jar|csv"
 				+ r"|rm|smil|wmv|swf|wma|zip|rar|gz)/.*", parsed.path.lower())
-			# check query too?
+			
+			ebool = extbool and extbool2 and extbool3
 	
 			sub_bool  = re.match(r"(www.)?[-a-zA-Z0-9.]*.ics.uci.edu", parsed.netloc)
 			sub_bool2 = re.match(r"(www.)?[-a-zA-Z0-9.]*.cs.uci.edu", parsed.netloc)
@@ -70,7 +81,10 @@ def is_valid(config, robot_cache_a, robot_cache_d, robot_url_cache, mem, url):
 			sub_bool4 = re.match(r"(www.)?[-a-zA-Z0-9.]*.stat.uci.edu", parsed.netloc)
 			sub_bool5 = (re.match(r"(www.)?[-a-zA-Z0-9.]*.today.uci.edu", parsed.netloc) 
             	and (parsed.path == "/department/information_computer_sciences/"))
-			if (extbool and (sub_bool or sub_bool2 or sub_bool3 or sub_bool4 or sub_bool5)):
+
+			sbool = sub_bool or sub_bool2 or sub_bool3 or sub_bool4 or sub_bool5
+			
+			if (ebool and sbool):
 				if parsed.netloc not in robot_url_cache:
 					robot_url_cache.add(parsed.netloc)
 					robot_site = parsed.scheme + "://" + parsed.netloc + "/robots.txt"
