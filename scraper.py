@@ -122,6 +122,7 @@ def is_valid(config, robot_cache_a, robot_cache_d, robot_url_cache, mem, mem2, u
 					if index.get_near_dups(s) != []:
 						return False
 					else:
+						print('this runs')
 						if url in robot_cache_a:
 							print("URL ADDED:", url)
 							mem.add(url)
