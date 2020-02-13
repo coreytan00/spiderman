@@ -6,9 +6,10 @@ from urllib import robotparser
 from utils import download
 import requests
 
-def scraper(config, robot_cache, robot_url_cache, mem, url, resp):
+def scraper(config, robot_cache_a, robot_cache_d, robot_url_cache, mem, url, resp):
 	links = extract_next_links(url, resp)
-	return [link for link in links if is_valid(config, robot_cache, robot_url_cache, mem, link)] #will be thrown in frontier by worker
+	return [link for link in links if is_valid(config, robot_cache_a, robot_cache_d, 
+		robot_url_cache, mem, link)] #will be thrown in frontier by worker
 
 def extract_next_links(url, resp):
 	lst = []
@@ -27,13 +28,21 @@ def extract_next_links(url, resp):
 	#total number of words on a page
 	#most common words
 
-def is_valid(config, robot_cache, robot_url_cache, mem, url):
+def is_valid(config, robot_cache_a, robot_cache_d, robot_url_cache, mem, url):
+	"""
+	mem = set() #memory cache of unique urls
+	robot_cache_a = set() #memory cache of allowed urls
+    robot_cache_d = set() #memory cache of disallowed urls
+    robot_url_cache = set() #memory cache of crawled robots.txt stored as netloc
+    """
 	try:
 		parsed = urlparse(url)
 		if parsed.scheme not in set(["http", "https"]):
 			return False
 		else:
 			#url = url - parsed.
+			#format for robot_cache_a and robot_cache_d
+			scheme_dom_path = parsed.scheme + "://" + parsed.netloc + parsed.path
 			extbool = not re.match(
 				r".*\.(css|js|bmp|gif|jpe?g|ico"
 				+ r"|png|tiff?|mid|mp2|mp3|mp4"
@@ -52,47 +61,34 @@ def is_valid(config, robot_cache, robot_url_cache, mem, url):
             	and (parsed.path == "/department/information_computer_sciences/"))
 			if (extbool and (sub_bool or sub_bool2 or sub_bool3 or sub_bool4 or sub_bool5)):
 				if parsed.netloc not in robot_url_cache:
+					robot_url_cache.add(parsed.netloc)
 					robot_site = parsed.scheme + "://" + parsed.netloc + "/robots.txt"
 					robot_resp = download.download(robot_site, config, logger=None)
 					if 200<= robot_resp.status < 300:
-						robot_url_cache.add(parsed.netloc)
 						robot_txt = robot_resp.raw_response.text
-						robot_txt2 = robot_resp.raw_response.content
-						parsed_robot = robot_txt.splitlines()
-						print(parsed_robot)
-						parse(parsed_robot)
-						
-						#for line in robot_txt:
-							#line = line.rstrip("\n")
-						#	print(line)
-						#findall
-
+						parse(parsed, robot_txt, robot_cache_a, robot_cache_d)
 					"""
 					the game plan is:
 						create our similar download function (like the one provided)
 						so that we can ensure it downloads from the cache server. check
 						download.py. Read the response given(text/read/content/whatever),
-						overload can_fetch method so that we can grab the disallowed urls.
+						grab the disallowed urls.
 						create a set of disallowed urls(complete with domain and path).
-						then check if netloc+path are in the disallowed set.
-
-					robot_resp = requests.get(robot_site)
-					if robot_resp.ok:
-						#crawl through, generate list of disallowed
-						disallowed_lst = []
-						robot_soup = BeautifulSoup(robot_resp.text, 'html.parser')
-						#for link in soup.find_all(''):
-
-						robot_cache[parsed.netloc] = 
+						then check if netloc+path are in the disallowed set
 				
 					#check crawl delay
 					#check if url can be accessed
 					"""
-					
-				if url not in mem:
-					mem.add(url)
-					return True
-				else:
+				#else
+				#found in robot_url_cache - just means it's been checked.
+				#doesn't necessarily mean there is a robots.txt
+				if scheme_dom_path in robot_cache_a:
+					if scheme_dom_path not in mem:
+						mem.add(scheme_dom_path)
+						return True
+					else:
+						return False
+				elif scheme_dom_path in robot_cache_d:
 					return False
 
 	except TypeError:
@@ -101,69 +97,42 @@ def is_valid(config, robot_cache, robot_url_cache, mem, url):
 
 #https://github.com/python/cpython/blob/master/Lib/urllib/robotparser.py#L144
 #TODO
-def parse(parsed_robot):
+def parse(parsed, robot_txt, robot_cache_a, robot_cache_d):
+	parsed_robot = robot_txt.splitlines()
+	print(parsed_robot)
+
 	state = 0
-	entry = robotparser.Entry()
+	#state = 0 --nothing
+	#state = 1 --useragent * found
+
 	for line in parsed_robot:
 		line = line.split()
 		if len(line) == 2:
 			key = line[0].strip().lower()
 			value = unquote(line[1].strip())
-			print(key, "TO", value)
-		else:
-			print("WHATISTHIS", line)
-
-	# states:
-        #   0: start state
-        #   1: saw user-agent line
-        #   2: saw an allow or disallow line
-
-		"""
-		if len(line) == 2:
-			#check
-            line[0] = line[0].strip().lower()
-            line[1] = urllib.parse.unquote(line[1].strip())
-            if line[0] == "user-agent":
-                if state == 2:
-                    self._add_entry(entry)
-                    entry = Entry()
-                entry.useragents.append(line[1])
-                state = 1
-            elif line[0] == "disallow":
-                if state != 0:
-                    entry.rulelines.append(RuleLine(line[1], False))
-                    state = 2
-            elif line[0] == "allow":
-                if state != 0:
-                    entry.rulelines.append(RuleLine(line[1], True))
-                    state = 2
-            elif line[0] == "crawl-delay":
-                if state != 0:
-                    # before trying to convert to int we need to make
-                    # sure that robots.txt has valid syntax otherwise
-                    # it will crash
-                    if line[1].strip().isdigit():
-                        entry.delay = int(line[1])
-                    state = 2
-            elif line[0] == "request-rate":
-                if state != 0:
-                    numbers = line[1].split('/')
-                    # check if all values are sane
-                    if (len(numbers) == 2 and numbers[0].strip().isdigit()
-                        and numbers[1].strip().isdigit()):
-                        entry.req_rate = RequestRate(int(numbers[0]), int(numbers[1]))
-                    state = 2
-            elif line[0] == "sitemap":
-            	self.sitemaps.append(line[1])
-		"""
-
-DOMAINS = [
-	"www.ics.uci.edu",
-	"www.cs.uci.edu",
-	"www.informatics.uci.edu",
-	"www.stat.uci.edu",
-]
-
+			if key == "user-agent":
+				if value == "*":
+					state = 1
+				else:
+					state = 0
+			elif state == 1:
+				if key == "disallow":
+					robot_cache_d.add(parsed.scheme + "://" + parsed.netloc + value)
+	            elif key == "allow":
+	                robot_cache_a.add(parsed.scheme + "://" + parsed.netloc + value)
+	            """
+	            elif key == "crawl-delay":
+	            	if value.strip().isdigit():
+	            		delay = int(value)
+	           
+            	elif key == "request-rate": #pages per second
+            		numbers = value.split('/')
+            		# check if all values are sane
+            		if (len(numbers) == 2 and numbers[0].strip().isdigit() 
+            			and numbers[1].strip().isdigit()):
+            			#entry.req_rate = RequestRate(int(numbers[0]), int(numbers[1]))
+                    	rr = (int(numbers[0]), int(numbers[1])
+                """
 
 STOPWORDS = [
 	'a', 'about', 'above', 'after', 'again', 'against', 'all', 'am', 'an', 
