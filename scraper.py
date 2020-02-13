@@ -106,6 +106,7 @@ def is_valid(config, robot_cache_a, robot_cache_d, robot_url_cache, mem, url, re
 				#doesn't necessarily mean there is a robots.txt
 				if url not in mem:
 					#simhash here
+					print("mem": mem)
 					if len(mem) != 0:
 						index=SimhashIndex(mem,k=10)
 						doc = resp.raw_response.text
@@ -118,7 +119,7 @@ def is_valid(config, robot_cache_a, robot_cache_d, robot_url_cache, mem, url, re
 
 						if index.get_near_dups(s) != []:
 							return False
-							
+
 					if url in robot_cache_a:
 						print("URL ADDED:", url)
 						mem[str(url)] = "xd"
