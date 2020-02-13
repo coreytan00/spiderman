@@ -13,9 +13,6 @@ def scraper(config, robot_cache_a, robot_cache_d, robot_url_cache, mem, url, res
 
 def extract_next_links(url, resp):
 	lst = []
-	print("resp .url: ", resp.url)
-	print("resp status: ", resp.status)
-	print("resp error: ", resp.error)
 	if 200<= resp.status < 300:
 		html_doc = resp.raw_response.text
 		soup = BeautifulSoup(html_doc, 'html.parser')
@@ -109,10 +106,12 @@ def is_valid(config, robot_cache_a, robot_cache_d, robot_url_cache, mem, url):
 				if url not in mem:
 					if url in robot_cache_a:
 						mem.add(url)
+						print(URL ADDED: url)
 						return True
 					elif url in robot_cache_d:
 						return False
 					else:
+						print(URL ADDED: url)
 						mem.add(url)
 						return True
 				else:
