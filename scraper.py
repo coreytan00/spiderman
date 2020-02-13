@@ -131,7 +131,7 @@ def is_valid(config, robot_cache_a, robot_cache_d, robot_url_cache, mem, mem2, u
 						else:
 							print("URL ADDED:", url)
 							mem.add(url)
-							mem.append((str(url),s))
+							mem2.append((str(url),s))
 							return True
 				else:
 					return False
