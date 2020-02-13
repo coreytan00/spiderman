@@ -111,6 +111,8 @@ def is_valid(config, robot_cache_a, robot_cache_d, robot_url_cache, mem, url, re
 					soup = BeautifulSoup(doc, 'html.parser')
 					[s.extract() for s in soup(['style', 'script', '[document]', 'head', 'title'])]
 					text_only = soup.getText()
+					print(type(text_only))
+					print(text_only)
 					s = Simhash(get_features(text_only))
 					if index.get_near_dups(s) != []:
 						return False
