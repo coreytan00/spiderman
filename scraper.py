@@ -106,7 +106,7 @@ def is_valid(config, robot_cache_a, robot_cache_d, robot_url_cache, mem, mem2, u
 				#found in robot_url_cache - just means it's been checked.
 				#doesn't necessarily mean there is a robots.txt
 				if url not in mem:
-					site_resp = download.download(robot_site, config, logger=None)
+					site_resp = download.download(url, config, logger=None)
 					#simhash here
 					doc = site_resp.raw_response.text
 					soup = BeautifulSoup(doc, 'html.parser')
