@@ -7,10 +7,10 @@ from utils import download
 import requests
 from simhash import Simhash, SimhashIndex
 
-def scraper(config, robot_cache_a, robot_cache_d, robot_url_cache, mem, mem2, url):
+def scraper(config, robot_cache_a, robot_cache_d, robot_url_cache, mem, mem2, url, resp):
 	links = extract_next_links(url, resp)
 	return [link for link in links if is_valid(config, robot_cache_a, robot_cache_d, 
-		robot_url_cache, mem, mem2, link, resp)] #will be thrown in frontier by worker
+		robot_url_cache, mem, mem2, link)] #will be thrown in frontier by worker
 
 def extract_next_links(url, resp):
 	lst = []
