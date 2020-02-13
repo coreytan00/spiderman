@@ -113,12 +113,12 @@ def is_valid(config, robot_cache_a, robot_cache_d, robot_url_cache, mem, url, re
 					text_only = soup.getText()
 					filtered_text = " ".join(text_only.split())
 					s = Simhash(get_features(filtered_text))
-
+					"""
 					if len(mem) != 0:
 						index=SimhashIndex(mem,k=10)
 						if index.get_near_dups(s) != []:
 							return False
-
+					"""
 					else:
 						if url in robot_cache_a:
 							print("URL ADDED:", url)
