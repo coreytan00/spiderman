@@ -40,7 +40,11 @@ def is_valid(config, robot_cache_a, robot_cache_d, robot_url_cache, mem, url):
 		if parsed.scheme not in set(["http", "https"]):
 			return False
 		else:
+			print(type(url) + "     " + url)
+			print(type(parsed.fragment + "     " + parsed.fragment))
+
 			url = url - parsed.fragment
+
 			extbool = not re.match(
 				r".*\.(css|js|bmp|gif|jpe?g|ico"
 				+ r"|png|tiff?|mid|mp2|mp3|mp4"
