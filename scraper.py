@@ -148,7 +148,7 @@ def is_valid(config, robot_cache_a, robot_cache_d, robot_url_cache, mem, mem2,
 		print ("TypeError for ", parsed)
 		raise
 
-def check(filtered_text, common_dict, longest_page, ics_subdomains, sub_bool, site, url)
+def check(filtered_text, common_dict, longest_page, ics_subdomains, sub_bool, site, url):
 	#find longest page in terms of number of words.
 	if len(filtered_text) > longest_page[1]:
 		longest_page[0] = url
