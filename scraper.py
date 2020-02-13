@@ -108,7 +108,7 @@ def is_valid(config, robot_cache_a, robot_cache_d, robot_url_cache, mem, url, re
 				if url not in mem:
 					#simhash here
 					index=SimhashIndex(mem,k=10)
-					s = Simhash(get_features(resp.raw_response.text))
+					s = Simhash(get_features(resp.raw_response.content))
 					if index.get_near_dups(s) != []:
 						return False
 					else:
