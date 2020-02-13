@@ -43,7 +43,7 @@ def is_valid(config, robot_cache_a, robot_cache_d, robot_url_cache, mem, url):
 			print(url)
 			print(parsed.fragment)
 
-			url = str(url) - "/"
+			url = url.replace(parsed.fragment, "")
 
 			extbool = not re.match(
 				r".*\.(css|js|bmp|gif|jpe?g|ico"
