@@ -125,10 +125,8 @@ def is_valid(config, robot_cache_a, robot_cache_d, robot_url_cache, mem, mem2,
 						s = Simhash(filtered_text)
 						index=SimhashIndex(mem2) #k=2
 						if index.get_near_dups(s) != []:
-							print('this is running insteawd')
 							return False
 						else:
-							print('this runs')
 							if url in robot_cache_a:
 								check(filtered_text, common_dict, longest_page, ics_subdomains, sub_bool, parsed.netloc, url)
 								mem.add(url)
