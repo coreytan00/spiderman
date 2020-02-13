@@ -107,6 +107,7 @@ def is_valid(config, robot_cache_a, robot_cache_d, robot_url_cache, mem, url, re
 				if url not in mem:
 					#simhash here
 					index=SimhashIndex(mem,k=10)
+					"""
 					doc = resp.raw_response.text
 					soup = BeautifulSoup(doc, 'html.parser')
 					[s.extract() for s in soup(['style', 'script', '[document]', 'head', 'title'])]
@@ -116,16 +117,17 @@ def is_valid(config, robot_cache_a, robot_cache_d, robot_url_cache, mem, url, re
 					if index.get_near_dups(s) != []:
 						return False
 					else:
-						if url in robot_cache_a:
-							print("URL ADDED:", url)
-							mem[str(url)] = s
-							return True
-						elif url in robot_cache_d:
-							return False
-						else:
-							print("URL ADDED:", url)
-							mem[str(url)] = s
-							return True
+						"""
+					if url in robot_cache_a:
+						print("URL ADDED:", url)
+						mem[str(url)] = "xd"
+						return True
+					elif url in robot_cache_d:
+						return False
+					else:
+						print("URL ADDED:", url)
+						mem[str(url)] = "xd"
+						return True
 				else:
 					return False
 
