@@ -57,8 +57,10 @@ def is_valid(config, robot_cache, robot_url_cache, mem, url):
 						robot_url_cache.add(parsed.netloc)
 						robot_txt = robot_resp.raw_response.text
 						robot_txt2 = robot_resp.raw_response.content
-						print(robot_txt.split())
-						#print(robot_txt.splitlines())
+						parsed_robot = robot_txt.splitlines()
+						print(parsed_robot)
+						parse(parsed_robot)
+						
 						#for line in robot_txt:
 							#line = line.rstrip("\n")
 						#	print(line)
@@ -95,6 +97,57 @@ def is_valid(config, robot_cache, robot_url_cache, mem, url):
 	except TypeError:
 		print ("TypeError for ", parsed)
 		raise
+
+#https://github.com/python/cpython/blob/master/Lib/urllib/robotparser.py#L144
+#TODO
+def parse(parsed_robot):
+	# states:
+        #   0: start state
+        #   1: saw user-agent line
+        #   2: saw an allow or disallow line
+    state = 0
+    entry = robotparser.Entry()
+	for line in parsed_robot:
+		line = line.split()
+		print(line)
+		"""
+		if len(line) == 2:
+			#check
+            line[0] = line[0].strip().lower()
+            line[1] = urllib.parse.unquote(line[1].strip())
+            if line[0] == "user-agent":
+                if state == 2:
+                    self._add_entry(entry)
+                    entry = Entry()
+                entry.useragents.append(line[1])
+                state = 1
+            elif line[0] == "disallow":
+                if state != 0:
+                    entry.rulelines.append(RuleLine(line[1], False))
+                    state = 2
+            elif line[0] == "allow":
+                if state != 0:
+                    entry.rulelines.append(RuleLine(line[1], True))
+                    state = 2
+            elif line[0] == "crawl-delay":
+                if state != 0:
+                    # before trying to convert to int we need to make
+                    # sure that robots.txt has valid syntax otherwise
+                    # it will crash
+                    if line[1].strip().isdigit():
+                        entry.delay = int(line[1])
+                    state = 2
+            elif line[0] == "request-rate":
+                if state != 0:
+                    numbers = line[1].split('/')
+                    # check if all values are sane
+                    if (len(numbers) == 2 and numbers[0].strip().isdigit()
+                        and numbers[1].strip().isdigit()):
+                        entry.req_rate = RequestRate(int(numbers[0]), int(numbers[1]))
+                    state = 2
+            elif line[0] == "sitemap":
+            	self.sitemaps.append(line[1])
+		"""
 
 DOMAINS = [
 	"www.ics.uci.edu",
