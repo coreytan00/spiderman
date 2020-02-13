@@ -7,7 +7,7 @@ from utils import download
 import requests
 from simhash import Simhash, SimhashIndex
 
-def scraper(config, robot_cache_a, robot_cache_d, robot_url_cache, mem, mem2, url, resp):
+def scraper(config, robot_cache_a, robot_cache_d, robot_url_cache, mem, mem2, url):
 	links = extract_next_links(url, resp)
 	return [link for link in links if is_valid(config, robot_cache_a, robot_cache_d, 
 		robot_url_cache, mem, mem2, link, resp)] #will be thrown in frontier by worker
@@ -27,7 +27,7 @@ def extract_next_links(url, resp):
 	#total number of words on a page
 	#most common words
 
-def is_valid(config, robot_cache_a, robot_cache_d, robot_url_cache, mem, mem2, url, resp):
+def is_valid(config, robot_cache_a, robot_cache_d, robot_url_cache, mem, mem2, url):
 	"""
 	mem = set() #memory cache of unique urls
 	robot_cache_a = set() #memory cache of allowed urls
@@ -106,11 +106,9 @@ def is_valid(config, robot_cache_a, robot_cache_d, robot_url_cache, mem, mem2, u
 				#found in robot_url_cache - just means it's been checked.
 				#doesn't necessarily mean there is a robots.txt
 				if url not in mem:
-					
-					print("mem: ", mem)
-
+					site_resp = download.download(robot_site, config, logger=None)
 					#simhash here
-					doc = resp.raw_response.text
+					doc = site_resp.raw_response.text
 					soup = BeautifulSoup(doc, 'html.parser')
 					#filter text from site
 					[s.extract() for s in soup(['style', 'script', '[document]', 'head', 'title'])]
@@ -118,7 +116,7 @@ def is_valid(config, robot_cache_a, robot_cache_d, robot_url_cache, mem, mem2, u
 					filtered_text = text_only.split()
 					s = Simhash(filtered_text)
 
-					index=SimhashIndex(mem2, k=100)
+					index=SimhashIndex(mem2, k=10)
 					if index.get_near_dups(s) != []:
 						print('this is running insteawd')
 						return False
