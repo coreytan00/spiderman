@@ -120,6 +120,7 @@ def is_valid(config, robot_cache_a, robot_cache_d, robot_url_cache, mem, mem2, u
 
 					index=SimhashIndex(mem2,k=10)
 					if index.get_near_dups(s) != []:
+						print('this is running insteawd')
 						return False
 					else:
 						print('this runs')
