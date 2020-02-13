@@ -41,8 +41,7 @@ def is_valid(config, robot_cache_a, robot_cache_d, robot_url_cache, mem, url):
 			return False
 		else:
 			url = url.replace(parsed.fragment, "")
-			print(parsed)
-			print(parsed.query.lower())
+		
 			extbool = not re.match(
 				r".*\.(css|js|bmp|gif|jpe?g|ico"
 				+ r"|png|tiff?|mid|mp2|mp3|mp4"
@@ -83,7 +82,7 @@ def is_valid(config, robot_cache_a, robot_cache_d, robot_url_cache, mem, url):
             	and (parsed.path == "/department/information_computer_sciences/"))
 
 			sbool = sub_bool or sub_bool2 or sub_bool3 or sub_bool4 or sub_bool5
-			
+
 			if (ebool and sbool):
 				if parsed.netloc not in robot_url_cache:
 					robot_url_cache.add(parsed.netloc)
