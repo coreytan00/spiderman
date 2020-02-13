@@ -108,7 +108,7 @@ def parse(parsed_robot):
     state = 0
     entry = robotparser.Entry()
 	for line in parsed_robot:
-		line = line.split()
+		line = line.splitlines()
 		print(line)
 		"""
 		if len(line) == 2:
