@@ -118,8 +118,8 @@ def parse(parsed, robot_txt, robot_cache_a, robot_cache_d):
 			elif state == 1:
 				if key == "disallow":
 					robot_cache_d.add(parsed.scheme + "://" + parsed.netloc + value)
-	            elif key == "allow":
-	                robot_cache_a.add(parsed.scheme + "://" + parsed.netloc + value)
+				elif key == "allow":
+	            	robot_cache_a.add(parsed.scheme + "://" + parsed.netloc + value)
 	            """
 	            elif key == "crawl-delay":
 	            	if value.strip().isdigit():
