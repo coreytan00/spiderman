@@ -116,7 +116,7 @@ def is_valid(config, robot_cache_a, robot_cache_d, robot_url_cache, mem, mem2, u
 					filtered_text = text_only.split()
 					s = Simhash(filtered_text)
 
-					index=SimhashIndex(mem2, k=10)
+					index=SimhashIndex(mem2, k=50)
 					if index.get_near_dups(s) != []:
 						print('this is running insteawd')
 						return False
@@ -164,13 +164,7 @@ def parse(parsed, robot_txt, robot_cache_a, robot_cache_d):
 					robot_cache_d.add(parsed.scheme + "://" + parsed.netloc + value)
 				elif key == "allow":
 					robot_cache_a.add(parsed.scheme + "://" + parsed.netloc + value)
-"""
-def get_features(text):
-	width = 1
-	text=text.lower()
-	text=re.sub(r'[^\w]+','',text)
-	return [text[i:i+width]for i in range(max(len(text)-width + 1, 1))]
-"""
+
 
 STOPWORDS = [
 	'a', 'about', 'above', 'after', 'again', 'against', 'all', 'am', 'an', 
