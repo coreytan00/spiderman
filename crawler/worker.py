@@ -14,7 +14,8 @@ class Worker(Thread):
         
     def run(self):
         start_time = time.time()
-        mem = list() #memory cache of unique urls
+        mem = set() #memory cache of unique urls
+        mem2 = list()
         robot_cache_a = set() #memory cache of allowed urls
         robot_cache_d = set() #memory cache of disallowed urls
         robot_url_cache = set() #memory cache of crawled robots.txt
@@ -28,14 +29,12 @@ class Worker(Thread):
                 f"Downloaded {tbd_url}, status <{resp.status}>, "
                 f"using cache {self.config.cache_server}.")
             scraped_urls = scraper(self.config, robot_cache_a, robot_cache_d, 
-                robot_url_cache, mem, tbd_url, resp)
+                robot_url_cache, mem, mem2, tbd_url, resp)
             for scraped_url in scraped_urls:
                 self.frontier.add_url(scraped_url)
             self.frontier.mark_url_complete(tbd_url)
             time.sleep(self.config.time_delay)
         print("Number of unique urls: ", len(mem))
         print("My program took", time.time() - start_time, "seconds to run")
-        print("All unique urls: ")
-        for url in mem:
-            print(url[0])
+        print("All unique urls: ", mem)
         

@@ -7,10 +7,10 @@ from utils import download
 import requests
 from simhash import Simhash, SimhashIndex
 
-def scraper(config, robot_cache_a, robot_cache_d, robot_url_cache, mem, url, resp):
+def scraper(config, robot_cache_a, robot_cache_d, robot_url_cache, mem, mem2, url, resp):
 	links = extract_next_links(url, resp)
 	return [link for link in links if is_valid(config, robot_cache_a, robot_cache_d, 
-		robot_url_cache, mem, link, resp)] #will be thrown in frontier by worker
+		robot_url_cache, mem, mem2, link, resp)] #will be thrown in frontier by worker
 
 def extract_next_links(url, resp):
 	lst = []
@@ -26,7 +26,7 @@ def extract_next_links(url, resp):
 	#total number of words on a page
 	#most common words
 
-def is_valid(config, robot_cache_a, robot_cache_d, robot_url_cache, mem, url, resp):
+def is_valid(config, robot_cache_a, robot_cache_d, robot_url_cache, mem, mem2, url, resp):
 	"""
 	mem = set() #memory cache of unique urls
 	robot_cache_a = set() #memory cache of allowed urls
@@ -105,27 +105,32 @@ def is_valid(config, robot_cache_a, robot_cache_d, robot_url_cache, mem, url, re
 				#found in robot_url_cache - just means it's been checked.
 				#doesn't necessarily mean there is a robots.txt
 				if url not in mem:
-					#simhash here
+					
 					print("mem: ", mem)
+
+					#simhash here
 					doc = resp.raw_response.text
 					soup = BeautifulSoup(doc, 'html.parser')
+					#filter text from site
 					[s.extract() for s in soup(['style', 'script', '[document]', 'head', 'title'])]
 					text_only = soup.getText()
 					filtered_text = " ".join(text_only.split())
 					s = Simhash(get_features(filtered_text))
-					index=SimhashIndex(mem,k=10)
+
+					index=SimhashIndex(mem2,k=10)
 					if index.get_near_dups(s) != []:
-						print(runs)
 						return False
 					else:
 						if url in robot_cache_a:
 							print("URL ADDED:", url)
-							mem.append((str(url),s))
+							mem.add(url)
+							mem2.append((str(url),s))
 							return True
 						elif url in robot_cache_d:
 							return False
 						else:
 							print("URL ADDED:", url)
+							mem.add(url)
 							mem.append((str(url),s))
 							return True
 				else:
