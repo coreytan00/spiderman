@@ -41,9 +41,9 @@ def is_valid(config, robot_cache_a, robot_cache_d, robot_url_cache, mem, url):
 			return False
 		else:
 			print(type(url))
-			print(type(parsed.fragment + "     " + parsed.fragment))
+			print(type(parsed.fragment))
 
-			url = url - parsed.fragment
+			url = (str(url) - str(parsed.fragment))
 
 			extbool = not re.match(
 				r".*\.(css|js|bmp|gif|jpe?g|ico"
