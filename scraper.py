@@ -114,7 +114,7 @@ def is_valid(config, robot_cache_a, robot_cache_d, robot_url_cache, mem, mem2,
 				#doesn't necessarily mean there is a robots.txt
 				if url not in mem:
 					site_resp = requests.get(url)
-					if site_resp.ok:
+					if 200<= site_resp.status_code < 300:
 						#simhash here
 						doc = site_resp.text
 						soup = BeautifulSoup(doc, 'html.parser')
