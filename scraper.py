@@ -27,7 +27,12 @@ def extract_next_links(url, resp):
 
 	#total number of words on a page
 	#most common words
-
+"""
+This method uses the Simhash library from
+https://github.com/leonsim/simhash/blob/master/simhash/__init__.py
+The original code can be found at
+https://leons.im/posts/a-python-implementation-of-simhash-algorithm/
+"""
 def is_valid(config, robot_cache_a, robot_cache_d, robot_url_cache, mem, mem2, 
 	longest_page, common_dict, ics_subdomains, url):
 	"""
