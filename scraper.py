@@ -23,6 +23,14 @@ def extract_next_links(url, resp):
 		for link in soup.find_all('a'):
 			hlink = link.get('href')
 			#check hlink if it's a path name, append url shceme and netloc
+			if hlink[0:2] == "./":
+			
+			elif hlink[0:2] == "//":
+
+			elif hlink[0] == "/":
+
+			else:
+				
 			lst.append(hlink)
 
 	return lst
