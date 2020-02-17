@@ -23,14 +23,10 @@ def extract_next_links(url, resp):
 		for link in soup.find_all('a'):
 			hlink = link.get('href')
 			#check hlink if it's a path name, append url shceme and netloc
-			if hlink[0:2] == "./":
-			
-			elif hlink[0:2] == "//":
-
+			if hlink[0:2] == "//":
+				hlink = parsed.scheme + ":" + hlink
 			elif hlink[0] == "/":
-
-			else:
-				
+				hlink = parsed.scheme + "://" + parsed.netloc + hlink
 			lst.append(hlink)
 
 	return lst
@@ -140,14 +136,16 @@ def is_valid(config, robot_cache_a, robot_cache_d, robot_url_cache, mem, mem2,
 									mem.add(url)
 									mem2.append((str(url),s))
 									return True
+						else:
+							return False
 					else:
 						return False
 				except socket.gaierror:
 					print('gaierror')
 					return False
 				except requests.exceptions.Timeout:
-				   	print('timeout error')
-				    return False
+					print('timeout error')
+					return False
 				except requests.exceptions.TooManyRedirects:
 					print('too many redirects error')
 					return False
