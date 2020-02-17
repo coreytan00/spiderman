@@ -24,14 +24,13 @@ def extract_next_links(url, resp):
 			hlink = link.get('href')
 			#check hlink if it's a path name, append url shceme and netloc
 			if type(hlink)==str:
-				if hlink[0:2] == "//":
-					hlink = parsed.scheme + ":" + hlink
-				elif hlink[0] == "/":
-					hlink = parsed.scheme + "://" + parsed.netloc + hlink
-				elif hlink[0] == "#":
+				if len(hlink) == 0 or hlink[0] == "#":
 					hlink = url
+				elif len(hlink) >= 1 and hlink[0] == "/":
+					hlink = parsed.scheme + "://" + parsed.netloc + hlink
+				elif len(hlink) >= 2 and hlink[0:2] == "//":
+					hlink = parsed.scheme + ":" + hlink
 				lst.append(hlink)
-
 	return lst
 
 	
