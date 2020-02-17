@@ -27,6 +27,8 @@ def extract_next_links(url, resp):
 				hlink = parsed.scheme + ":" + hlink
 			elif hlink[0] == "/":
 				hlink = parsed.scheme + "://" + parsed.netloc + hlink
+			elif hlink[0] == "#":
+				hlink = url
 			lst.append(hlink)
 
 	return lst
@@ -106,7 +108,7 @@ def is_valid(config, robot_cache_a, robot_cache_d, robot_url_cache, mem, mem2,
 		
 					if url not in mem:
 						site_resp = requests.get(url)
-						if site_resp == 200:
+						if site_resp.status_code == 200:
 							#simhash here
 							doc = site_resp.text
 							soup = BeautifulSoup(doc, 'html.parser')
@@ -141,19 +143,14 @@ def is_valid(config, robot_cache_a, robot_cache_d, robot_url_cache, mem, mem2,
 					else:
 						return False
 				except socket.gaierror:
-					print('gaierror')
 					return False
 				except requests.exceptions.Timeout:
-					print('timeout error')
 					return False
 				except requests.exceptions.TooManyRedirects:
-					print('too many redirects error')
 					return False
 				except requests.exceptions.ConnectionError:
-					print('connerror')
 					return False
 				except requests.exceptions.RequestException:
-					print('othererror')
 					return False
 			else:
 				return False
