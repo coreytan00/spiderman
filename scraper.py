@@ -24,12 +24,11 @@ def extract_next_links(url, resp):
 			hlink = link.get('href')
 			#check hlink if it's a path name, append url shceme and netloc
 			lst.append(hlink)
-			
+
 	return lst
 	# defend our position of low quality urls.
 
-	#total number of words on a page
-	#most common words
+	
 """
 This method uses the Simhash library from
 https://github.com/leonsim/simhash/blob/master/simhash/__init__.py
@@ -98,24 +97,10 @@ def is_valid(config, robot_cache_a, robot_cache_d, robot_url_cache, mem, mem2,
 						robot_url_cache.add(parsed.netloc)
 						robot_site = parsed.scheme + "://" + parsed.netloc + "/robots.txt"
 						robot_resp = download.download(robot_site, config, logger=None)
-						if 200<= robot_resp.status < 300:
+						if robot_resp.status == 200:
 							robot_txt = robot_resp.raw_response.text
 							parse(parsed, robot_txt, robot_cache_a, robot_cache_d)
-						"""
-						the game plan is:
-							create our similar download function (like the one provided)
-							so that we can ensure it downloads from the cache server. check
-							download.py. Read the response given(text/read/content/whatever),
-							grab the disallowed urls.
-							create a set of disallowed urls(complete with domain and path).
-							then check if netloc+path are in the disallowed set
-					
-						#check crawl delay
-						#check if url can be accessed
-						"""
-					#else
-					#found in robot_url_cache - just means it's been checked.
-					#doesn't necessarily mean there is a robots.txt
+		
 					if url not in mem:
 						site_resp = requests.get(url)
 						if 200<= site_resp.status_code < 300:
@@ -148,24 +133,24 @@ def is_valid(config, robot_cache_a, robot_cache_d, robot_url_cache, mem, mem2,
 									mem.add(url)
 									mem2.append((str(url),s))
 									return True
-						else:
-							return False
-					except socket.gaierror:
-						print('gaierror')
+					else:
 						return False
-					except requests.exceptions.Timeout:
-					    # Maybe set up for a retry, or continue in a retry loop
-					    return False
-					except requests.exceptions.TooManyRedirects:
-						return False
-					except requests.exceptions.ConnectionError:
-						print('connerror')
-						return False
-					except requests.exceptions.RequestException as e:
-						print('othererror')
-						return False
-				else:
+				except socket.gaierror:
+					print('gaierror')
 					return False
+				except requests.exceptions.Timeout:
+				    # Maybe set up for a retry, or continue in a retry loop
+				    return False
+				except requests.exceptions.TooManyRedirects:
+					return False
+				except requests.exceptions.ConnectionError:
+					print('connerror')
+					return False
+				except requests.exceptions.RequestException:
+					print('othererror')
+					return False
+			else:
+				return False
 
 	except TypeError:
 		#print ("TypeError for ", parsed)
