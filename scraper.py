@@ -26,7 +26,6 @@ def extract_next_links(url, resp):
 			lst.append(hlink)
 
 	return lst
-	# defend our position of low quality urls.
 
 	
 """
@@ -103,7 +102,7 @@ def is_valid(config, robot_cache_a, robot_cache_d, robot_url_cache, mem, mem2,
 		
 					if url not in mem:
 						site_resp = requests.get(url)
-						if 200<= site_resp.status_code < 300:
+						if site_resp == 200:
 							#simhash here
 							doc = site_resp.text
 							soup = BeautifulSoup(doc, 'html.parser')
@@ -139,9 +138,10 @@ def is_valid(config, robot_cache_a, robot_cache_d, robot_url_cache, mem, mem2,
 					print('gaierror')
 					return False
 				except requests.exceptions.Timeout:
-				    # Maybe set up for a retry, or continue in a retry loop
+				   	print('timeout error')
 				    return False
 				except requests.exceptions.TooManyRedirects:
+					print('too many redirects error')
 					return False
 				except requests.exceptions.ConnectionError:
 					print('connerror')
@@ -165,7 +165,6 @@ def check(filtered_text, common_dict, longest_page, ics_subdomains, sub_bool, si
 	for word in filtered_text:
 		if word not in STOPWORDS:
 			common_dict[word] +=1
-
 	#ics subdomains
 	if sub_bool: #that means it is ics domain
 		ics_subdomains[site].add(url)
