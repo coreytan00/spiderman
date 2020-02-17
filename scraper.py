@@ -6,6 +6,7 @@ from urllib import robotparser
 from utils import download
 import requests
 from simhash import Simhash, SimhashIndex
+import socket
 
 def scraper(config, robot_cache_a, robot_cache_d, robot_url_cache, mem, mem2, 
 	longest_page, common_dict, ics_subdomains, url, resp):
@@ -15,13 +16,15 @@ def scraper(config, robot_cache_a, robot_cache_d, robot_url_cache, mem, mem2,
 
 def extract_next_links(url, resp):
 	lst = []
-	if 200<= resp.status < 300:
+	parsed = urlparse(url)
+	if resp.status == 200: #or if resp.ok --> <=200. try to grab.
 		html_doc = resp.raw_response.text
-		print("resp .url: ", resp.url)
 		soup = BeautifulSoup(html_doc, 'html.parser')
 		for link in soup.find_all('a'):
 			hlink = link.get('href')
+			#check hlink if it's a path name, append url shceme and netloc
 			lst.append(hlink)
+			
 	return lst
 	# defend our position of low quality urls.
 
@@ -90,66 +93,83 @@ def is_valid(config, robot_cache_a, robot_cache_d, robot_url_cache, mem, mem2,
 			sbool = sub_bool or sub_bool2 or sub_bool3 or sub_bool4 or sub_bool5
 
 			if (ebool and sbool):
-				if parsed.netloc not in robot_url_cache:
-					robot_url_cache.add(parsed.netloc)
-					robot_site = parsed.scheme + "://" + parsed.netloc + "/robots.txt"
-					robot_resp = download.download(robot_site, config, logger=None)
-					if 200<= robot_resp.status < 300:
-						robot_txt = robot_resp.raw_response.text
-						parse(parsed, robot_txt, robot_cache_a, robot_cache_d)
-					"""
-					the game plan is:
-						create our similar download function (like the one provided)
-						so that we can ensure it downloads from the cache server. check
-						download.py. Read the response given(text/read/content/whatever),
-						grab the disallowed urls.
-						create a set of disallowed urls(complete with domain and path).
-						then check if netloc+path are in the disallowed set
-				
-					#check crawl delay
-					#check if url can be accessed
-					"""
-				#else
-				#found in robot_url_cache - just means it's been checked.
-				#doesn't necessarily mean there is a robots.txt
-				if url not in mem:
-					site_resp = requests.get(url)
-					if 200<= site_resp.status_code < 300:
-						#simhash here
-						doc = site_resp.text
-						soup = BeautifulSoup(doc, 'html.parser')
-						#filter text from site
-						[s.extract() for s in soup(['style', 'script', '[document]', 'head', 'title'])]
-						text_only = soup.getText()
-						filtered_text = text_only.split()
+				try:
+					if parsed.netloc not in robot_url_cache:
+						robot_url_cache.add(parsed.netloc)
+						robot_site = parsed.scheme + "://" + parsed.netloc + "/robots.txt"
+						robot_resp = download.download(robot_site, config, logger=None)
+						if 200<= robot_resp.status < 300:
+							robot_txt = robot_resp.raw_response.text
+							parse(parsed, robot_txt, robot_cache_a, robot_cache_d)
+						"""
+						the game plan is:
+							create our similar download function (like the one provided)
+							so that we can ensure it downloads from the cache server. check
+							download.py. Read the response given(text/read/content/whatever),
+							grab the disallowed urls.
+							create a set of disallowed urls(complete with domain and path).
+							then check if netloc+path are in the disallowed set
+					
+						#check crawl delay
+						#check if url can be accessed
+						"""
+					#else
+					#found in robot_url_cache - just means it's been checked.
+					#doesn't necessarily mean there is a robots.txt
+					if url not in mem:
+						site_resp = requests.get(url)
+						if 200<= site_resp.status_code < 300:
+							#simhash here
+							doc = site_resp.text
+							soup = BeautifulSoup(doc, 'html.parser')
+							#filter text from site
+							[s.extract() for s in soup(['style', 'script', '[document]', 'head', 'title'])]
+							text_only = soup.getText()
+							filtered_text = text_only.split()
 
-						#LOW INFO CONTENT
-						if len(filtered_text)<20:
-							return False
+							#LOW INFO CONTENT
+							if len(filtered_text)<20:
+								return False
 
-						s = Simhash(filtered_text)
-						index=SimhashIndex(mem2) #k=2
-						if index.get_near_dups(s) != []:
-							return False
-						else:
-							if url in robot_cache_a:
-								check(filtered_text, common_dict, longest_page, ics_subdomains, sub_bool, parsed.netloc, url)
-								mem.add(url)
-								mem2.append((str(url),s))
-								return True
-							elif url in robot_cache_d:
+							s = Simhash(filtered_text)
+							index=SimhashIndex(mem2) #k=2
+							if index.get_near_dups(s) != []:
 								return False
 							else:
-								check(filtered_text, common_dict, longest_page, ics_subdomains, sub_bool, parsed.netloc, url)
-								mem.add(url)
-								mem2.append((str(url),s))
-								return True
+								if url in robot_cache_a:
+									check(filtered_text, common_dict, longest_page, ics_subdomains, sub_bool, parsed.netloc, url)
+									mem.add(url)
+									mem2.append((str(url),s))
+									return True
+								elif url in robot_cache_d:
+									return False
+								else:
+									check(filtered_text, common_dict, longest_page, ics_subdomains, sub_bool, parsed.netloc, url)
+									mem.add(url)
+									mem2.append((str(url),s))
+									return True
+						else:
+							return False
+					except socket.gaierror:
+						print('gaierror')
+						return False
+					except requests.exceptions.Timeout:
+					    # Maybe set up for a retry, or continue in a retry loop
+					    return False
+					except requests.exceptions.TooManyRedirects:
+						return False
+					except requests.exceptions.ConnectionError:
+						print('connerror')
+						return False
+					except requests.exceptions.RequestException as e:
+						print('othererror')
+						return False
 				else:
 					return False
 
 	except TypeError:
-		print ("TypeError for ", parsed)
-		raise
+		#print ("TypeError for ", parsed)
+		return False
 
 def check(filtered_text, common_dict, longest_page, ics_subdomains, sub_bool, site, url):
 	#find longest page in terms of number of words.
