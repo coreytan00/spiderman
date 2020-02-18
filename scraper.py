@@ -61,7 +61,7 @@ def is_valid(config, robot_cache_a, robot_cache_d, robot_url_cache, mem, mem2,
 				+ r"|wav|avi|mov|mpeg|ram|m4v|mkv|ogg|ogv|pdf"
 				+ r"|ps|eps|tex|ppt|pptx|doc|docx|xls|xlsx|names"
 				+ r"|data|dat|exe|bz2|tar|msi|bin|7z|psd|dmg|iso"
-				+ r"|epub|dll|cnf|tgz|sha1"
+				+ r"|epub|dll|cnf|tgz|sha1|sql"
 				+ r"|thmx|mso|arff|rtf|jar|csv"
 				+ r"|rm|smil|wmv|swf|wma|zip|rar|gz)$", parsed.path.lower())
 
@@ -71,7 +71,7 @@ def is_valid(config, robot_cache_a, robot_cache_d, robot_url_cache, mem, mem2,
 				+ r"|wav|avi|mov|mpeg|ram|m4v|mkv|ogg|ogv|pdf"
 				+ r"|ps|eps|tex|ppt|pptx|doc|docx|xls|xlsx|names"
 				+ r"|data|dat|exe|bz2|tar|msi|bin|7z|psd|dmg|iso"
-				+ r"|epub|dll|cnf|tgz|sha1"
+				+ r"|epub|dll|cnf|tgz|sha1|sql"
 				+ r"|thmx|mso|arff|rtf|jar|csv"
 				+ r"|rm|smil|wmv|swf|wma|zip|rar|gz)$", parsed.query.lower())
 	
@@ -81,17 +81,17 @@ def is_valid(config, robot_cache_a, robot_cache_d, robot_url_cache, mem, mem2,
 				+ r"|wav|avi|mov|mpeg|ram|m4v|mkv|ogg|ogv|pdf"
 				+ r"|ps|eps|tex|ppt|pptx|doc|docx|xls|xlsx|names"
 				+ r"|data|dat|exe|bz2|tar|msi|bin|7z|psd|dmg|iso"
-				+ r"|epub|dll|cnf|tgz|sha1"
+				+ r"|epub|dll|cnf|tgz|sha1|sql"
 				+ r"|thmx|mso|arff|rtf|jar|csv"
 				+ r"|rm|smil|wmv|swf|wma|zip|rar|gz)/.*", parsed.path.lower())
 			
 			ebool = extbool and extbool2 and extbool3
 	
-			sub_bool  = re.match(r"(www.)?[-a-zA-Z0-9.]*.ics.uci.edu", parsed.netloc)
-			sub_bool2 = re.match(r"(www.)?[-a-zA-Z0-9.]*.cs.uci.edu", parsed.netloc)
-			sub_bool3 = re.match(r"(www.)?[-a-zA-Z0-9.]*.informatics.uci.edu", parsed.netloc)
-			sub_bool4 = re.match(r"(www.)?[-a-zA-Z0-9.]*.stat.uci.edu", parsed.netloc)
-			sub_bool5 = (re.match(r"(www.)?[-a-zA-Z0-9.]*.today.uci.edu", parsed.netloc) 
+			sub_bool  = re.match(r"(www.)?[-a-zA-Z0-9.]*\.ics\.uci\.edu", parsed.netloc)
+			sub_bool2 = re.match(r"(www.)?[-a-zA-Z0-9.]*\.cs\.uci\.edu", parsed.netloc)
+			sub_bool3 = re.match(r"(www.)?[-a-zA-Z0-9.]*\.informatics\.uci\.edu", parsed.netloc)
+			sub_bool4 = re.match(r"(www.)?[-a-zA-Z0-9.]*\.stat\.uci\.edu", parsed.netloc)
+			sub_bool5 = (re.match(r"(www.)?[-a-zA-Z0-9.]*today\.uci\.edu", parsed.netloc) 
             	and (parsed.path == "/department/information_computer_sciences/"))
 
 			sbool = sub_bool or sub_bool2 or sub_bool3 or sub_bool4 or sub_bool5
@@ -217,7 +217,7 @@ STOPWORDS = [
 	'was', "wasn't", 'we', "we'd", "we'll", "we're", "we've", 'were', "weren't", 'what', 
 	"what's", 'when', "when's", 'where', "where's", 'which', 'while', 'who', "who's", 
 	'whom', 'why', "why's", 'with', "won't", 'would', "wouldn't", 'you', "you'd",
-	"you'll", "you're", "you've", 'your', 'yours', 'yourself', 'yourselves'
+	"you'll", "you're", "you've", 'your', 'yours', 'yourself', 'yourselves', ' '
 ]
 
 #TODO:

@@ -53,6 +53,6 @@ class Worker(Thread):
 
         print("ics_subdomains: ")
         for k,v in sorted(ics_subdomains.items()):
-            print(k, " -> ", v)
+            print(k, " -> ", len(v))
 
 
