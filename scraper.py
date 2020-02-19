@@ -166,7 +166,8 @@ def check(filtered_text, common_dict, longest_page, ics_subdomains, sub_bool, si
 		longest_page[1] = len(filtered_text)
 	#most common words
 	for word in filtered_text:
-		if word not in STOPWORDS:
+		word = word.lower()
+		if re.match(r"[a-zA-Z0-9]+", word) and word not in STOPWORDS:
 			common_dict[word] +=1
 	#ics subdomains
 	if sub_bool: #that means it is ics domain

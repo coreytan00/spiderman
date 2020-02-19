@@ -41,7 +41,7 @@ class Worker(Thread):
             time.sleep(self.config.time_delay)
         print("Number of unique urls: ", len(mem))
         print("My program took", time.time() - start_time, "seconds to run")
-        print("All unique urls: ", mem)
+        #print("All unique urls: ", mem)
         print("Longest_page: ", longest_page[0], "has", longest_page[1], "words")
         print("Most common words: ")
         count = 0
